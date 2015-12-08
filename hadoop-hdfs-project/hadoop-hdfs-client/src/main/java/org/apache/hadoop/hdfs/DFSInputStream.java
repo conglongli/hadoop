@@ -652,6 +652,8 @@ public class DFSInputStream extends FSInputStream
     Token<BlockTokenIdentifier> accessToken = targetBlock.getBlockToken();
     CachingStrategy curCachingStrategy;
     boolean shortCircuitForbidden;
+    DFSClient.LOG.info("Conglong-Est: DFSInputStream Starting read blockId {} length {} from datanode {}",
+        blk.getBlockId(), length, datanode.getHostName());
     synchronized (infoLock) {
       curCachingStrategy = cachingStrategy;
       shortCircuitForbidden = shortCircuitForbidden();

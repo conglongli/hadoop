@@ -601,6 +601,16 @@ class DataStreamer extends Daemon {
           }
           initDataStreaming();
         }
+        if (nodes.length > 0) {
+          LOG.info("Conglong-Est: DataStreamer Start writing blockId {} length {} from client to {}",
+              block.getBlockId(), block.getNumBytes(), nodes[0]getHostName());
+        }
+        if (nodes.length > 1) {
+          for (int i=0; i < nodes.length-1; i++) {
+              LOG.info("Conglong-Est: DataStreamer Start writing blockId {} length {} from {} to {}",
+                  block.getBlockId(), block.getNumBytes(), nodes[i]getHostName(), nodes[i+1]getHostName());
+          }
+        }
 
         long lastByteOffsetInBlock = one.getLastByteOffsetBlock();
         if (lastByteOffsetInBlock > stat.getBlockSize()) {
@@ -625,7 +635,8 @@ class DataStreamer extends Daemon {
           }
           stage = BlockConstructionStage.PIPELINE_CLOSE;
         }
-
+        LOG.info("Conglong-Act: DataStreamer Start writing blockId {} length {} from client to {}",
+              block.getBlockId(), block.getNumBytes(), nodes[0]getHostName());
         // send the packet
         SpanId spanId = SpanId.INVALID;
         synchronized (dataQueue) {
