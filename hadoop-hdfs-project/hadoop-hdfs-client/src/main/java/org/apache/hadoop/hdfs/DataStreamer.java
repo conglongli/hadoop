@@ -601,11 +601,11 @@ class DataStreamer extends Daemon {
           }
           initDataStreaming();
         }
-        long queueLen = 0
+        long queueLen = 0;
         if (nodes.length > 0 && dataQueue.size() > 0) {
           ListIterator<DFSPacket> listIterator = dataQueue.listIterator();
           while (listIterator.hasNext()) {
-            queueLen += (listIterator.next()).getDataLen()
+            queueLen += (listIterator.next()).getDataLen();
           }
           LOG.info("Conglong Write Est 610 DataStreamer Start writing blockId {} length {} from client to {}",
               block.getBlockId(), queueLen, nodes[0].getHostName());
