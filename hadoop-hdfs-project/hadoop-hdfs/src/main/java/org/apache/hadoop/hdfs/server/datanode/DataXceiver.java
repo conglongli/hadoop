@@ -553,7 +553,7 @@ class DataXceiver extends Receiver implements Runnable {
       writeSuccessWithChecksumInfo(blockSender, new DataOutputStream(getOutputStream()));
 
       long beginRead = Time.monotonicNow();
-      LOG.info("Conglong-Act: DataXceiver Start Sending blockId {} length {} from {} to {}",
+      LOG.info("Conglong Read Act 556 DataXceiver Start Sending blockId {} length {} from {} to {}",
           block.getBlockId(), length, localAddress, remoteAddress);
       read = blockSender.sendBlock(out, baseStream, null); // send data
       long duration = Time.monotonicNow() - beginRead;

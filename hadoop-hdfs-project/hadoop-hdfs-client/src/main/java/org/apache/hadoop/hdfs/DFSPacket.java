@@ -224,6 +224,10 @@ public class DFSPacket {
     return offsetInBlock + dataPos - dataStart;
   }
 
+  synchronized long getDataLen() {
+    return dataPos - dataStart;
+  }
+
   /**
    * Check if this packet is a heart beat packet
    *

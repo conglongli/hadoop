@@ -262,6 +262,16 @@ public class DFSInputStream extends FSInputStream
       this.cachingStrategy = dfsClient.getDefaultReadCachingStrategy();
     }
     this.locatedBlocks = locatedBlocks;
+    if (locatedBlocks != null) {
+      Iterator<LocatedBlock> iter = locatedBlocks.getLocatedBlocks().iterator();
+      while (iter.hasNext()) {
+        LocatedBlock blk = iter.next().getBlock();
+        for(DatanodeInfo datanode : blk.getLocations()) {
+          DFSClient.LOG.info("Conglong Read Est 270 DFSInputStream Starting read blockId {} length {} from datanode {}",
+              (blk.getBlock()).getBlockId(), blk.getBlockSize(), datanode.getHostName());
+        }
+      }
+    }
     openInfo(false);
   }
 
@@ -652,7 +662,7 @@ public class DFSInputStream extends FSInputStream
     Token<BlockTokenIdentifier> accessToken = targetBlock.getBlockToken();
     CachingStrategy curCachingStrategy;
     boolean shortCircuitForbidden;
-    DFSClient.LOG.info("Conglong-Est: DFSInputStream Starting read blockId {} length {} from datanode {}",
+    DFSClient.LOG.info("Conglong Read Est 655 DFSInputStream Starting read blockId {} length {} from datanode {}",
         blk.getBlockId(), length, datanode.getHostName());
     synchronized (infoLock) {
       curCachingStrategy = cachingStrategy;
@@ -1040,6 +1050,8 @@ public class DFSInputStream extends FSInputStream
         if (!deadNodes.containsKey(nodes[i])
             && (ignoredNodes == null || !ignoredNodes.contains(nodes[i]))) {
           chosenNode = nodes[i];
+          DFSClient.LOG.info("Conglong Read Est 1053 DFSInputStream Starting read blockId {} length {} from datanode {}",
+              (block.getBlock()).getBlockId(), block.getBlockSize(), nodes[i].getHostName());
           // Storage types are ordered to correspond with nodes, so use the same
           // index to get storage type.
           if (storageTypes != null && i < storageTypes.length) {
@@ -1166,6 +1178,8 @@ public class DFSInputStream extends FSInputStream
         DFSClientFaultInjector.get().fetchFromDatanodeException();
         reader = getBlockReader(block, startInBlk, len, datanode.addr,
             datanode.storageType, datanode.info);
+        DFSClient.LOG.info("Conglong Read Est 1169 DFSInputStream Starting read blockId {} length {} from datanode {}",
+            (block.getBlock()).getBlockId(), len, datanode.getHostName());
         int nread = reader.readAll(buf, offset, len);
         updateReadStatistics(readStatistics, nread, reader);
         if (nread != len) {
