@@ -952,8 +952,10 @@ public class DFSInputStream extends FSInputStream
     ReaderStrategy byteArrayReader = new ByteArrayStrategy(buf);
     try (TraceScope ignored =
              dfsClient.newPathTraceScope("DFSInputStream#byteArrayRead", src)) {
-      DFSClient.LOG.info("Conglong Read Est 955 DFSInputStream Starting read blockId {} length {} from datanode {}",
+      if (getCurrentBlock() != null && currentNode != null) {
+        DFSClient.LOG.info("Conglong Read Est 955 DFSInputStream Starting read blockId {} length {} from datanode {}",
             getCurrentBlock().getBlockId(), getCurrentBlock().getNumBytes(), currentNode.getHostName());
+      }
       return readWithStrategy(byteArrayReader, off, len);
     }
   }
@@ -963,8 +965,10 @@ public class DFSInputStream extends FSInputStream
     ReaderStrategy byteBufferReader = new ByteBufferStrategy(buf);
     try (TraceScope ignored =
              dfsClient.newPathTraceScope("DFSInputStream#byteBufferRead", src)){
-      DFSClient.LOG.info("Conglong Read Est 966 DFSInputStream Starting read blockId {} length {} from datanode {}",
+      if (getCurrentBlock() != null && currentNode != null) {
+        DFSClient.LOG.info("Conglong Read Est 966 DFSInputStream Starting read blockId {} length {} from datanode {}",
             getCurrentBlock().getBlockId(), getCurrentBlock().getNumBytes(), currentNode.getHostName());
+      }
       return readWithStrategy(byteBufferReader, 0, buf.remaining());
     }
   }
