@@ -604,7 +604,7 @@ class DataStreamer extends Daemon {
         }
         long queueLen = 0;
         if (nodes.length > 0 && dataQueue.size() > 0) {
-          ListIterator listIterator = dataQueue.listIterator();
+          ListIterator<DFSPacket> listIterator = dataQueue.listIterator();
           while (listIterator.hasNext()) {
             queueLen += (listIterator.next()).getDataLen();
           }
