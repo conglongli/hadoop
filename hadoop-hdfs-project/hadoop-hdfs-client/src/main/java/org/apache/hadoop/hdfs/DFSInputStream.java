@@ -265,7 +265,7 @@ public class DFSInputStream extends FSInputStream
     if (locatedBlocks != null) {
       Iterator<LocatedBlock> iter = locatedBlocks.getLocatedBlocks().iterator();
       while (iter.hasNext()) {
-        LocatedBlock blk = iter.next().getBlock();
+        LocatedBlock blk = iter.next();
         for(DatanodeInfo datanode : blk.getLocations()) {
           DFSClient.LOG.info("Conglong Read Est 270 DFSInputStream Starting read blockId {} length {} from datanode {}",
               (blk.getBlock()).getBlockId(), blk.getBlockSize(), datanode.getHostName());
@@ -1179,7 +1179,7 @@ public class DFSInputStream extends FSInputStream
         reader = getBlockReader(block, startInBlk, len, datanode.addr,
             datanode.storageType, datanode.info);
         DFSClient.LOG.info("Conglong Read Est 1169 DFSInputStream Starting read blockId {} length {} from datanode {}",
-            (block.getBlock()).getBlockId(), len, datanode.getHostName());
+            (block.getBlock()).getBlockId(), len, (datanode.info).getHostName());
         int nread = reader.readAll(buf, offset, len);
         updateReadStatistics(readStatistics, nread, reader);
         if (nread != len) {
