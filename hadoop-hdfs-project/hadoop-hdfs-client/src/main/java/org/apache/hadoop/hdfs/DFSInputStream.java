@@ -848,6 +848,8 @@ public class DFSInputStream extends FSInputStream
     while (true) {
       // retry as many times as seekToNewSource allows.
       try {
+        DFSClient.LOG.info("Conglong Read Est 851 DFSInputStream Starting read blockId {} length {} from datanode {}",
+            getCurrentBlock().getBlockId(), getCurrentBlock().getNumBytes(), currentNode.getHostName());
         return reader.doRead(blockReader, off, len);
       } catch ( ChecksumException ce ) {
         DFSClient.LOG.warn("Found Checksum error for "
