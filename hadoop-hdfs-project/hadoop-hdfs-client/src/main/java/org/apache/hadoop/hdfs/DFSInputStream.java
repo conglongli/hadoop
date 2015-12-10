@@ -900,6 +900,7 @@ public class DFSInputStream extends FSInputStream
           // currentNode can be left as null if previous read had a checksum
           // error on the same block. See HDFS-3067
           if (pos > blockEnd || currentNode == null) {
+            DFSClient.LOG.info("Conglong Read Est 903");
             currentNode = blockSeekTo(pos);
           }
           int realLen = (int) Math.min(len, (blockEnd - pos + 1L));
@@ -909,6 +910,7 @@ public class DFSInputStream extends FSInputStream
                   locatedBlocks.getFileLength() - pos);
             }
           }
+          DFSClient.LOG.info("Conglong Read Est 912");
           int result = readBuffer(strategy, off, realLen, corruptedBlockMap);
 
           if (result >= 0) {
