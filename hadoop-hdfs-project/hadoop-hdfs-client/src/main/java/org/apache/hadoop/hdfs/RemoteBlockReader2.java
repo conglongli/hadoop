@@ -136,6 +136,7 @@ public class RemoteBlockReader2  implements BlockReader {
   public synchronized int read(byte[] buf, int off, int len)
       throws IOException {
     UUID randomId = (LOG.isTraceEnabled() ? UUID.randomUUID() : null);
+    LOG.info("Conglong Read Est 139");
     LOG.trace("Starting read #{} file {} from datanode {}",
         randomId, filename, datanodeID.getHostName());
 
