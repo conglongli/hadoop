@@ -666,9 +666,17 @@ public class DFSInputStream extends FSInputStream
     DFSClient.LOG.info("Conglong Read Est 655 DFSInputStream Starting read blockId {} length {} from datanode {}",
         blk.getBlockId(), length, datanode.getHostName());
     synchronized (infoLock) {
+      DFSClient.LOG.info("Conglong Read Est 669 DFSInputStream Starting read blockId {} length {} from datanode {}",
+        blk.getBlockId(), length, datanode.getHostName());
       curCachingStrategy = cachingStrategy;
+      DFSClient.LOG.info("Conglong Read Est 672 DFSInputStream Starting read blockId {} length {} from datanode {}",
+        blk.getBlockId(), length, datanode.getHostName());
       shortCircuitForbidden = shortCircuitForbidden();
+      DFSClient.LOG.info("Conglong Read Est 675 DFSInputStream Starting read blockId {} length {} from datanode {}",
+        blk.getBlockId(), length, datanode.getHostName());
     }
+    DFSClient.LOG.info("Conglong Read Est 678 DFSInputStream Starting read blockId {} length {} from datanode {}",
+        blk.getBlockId(), length, datanode.getHostName());
     return new BlockReaderFactory(dfsClient.getConf()).
         setInetSocketAddress(targetAddr).
         setRemotePeerFactory(dfsClient).
