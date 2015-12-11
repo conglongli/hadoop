@@ -628,6 +628,7 @@ public class DFSInputStream extends FSInputStream
         blockReader = getBlockReader(targetBlock, offsetIntoBlock,
             targetBlock.getBlockSize() - offsetIntoBlock, targetAddr,
             storageType, chosenNode);
+        DFSClient.LOG.info("Conglong Read Est 631");
         if(connectFailedOnce) {
           DFSClient.LOG.info("Successfully connected to " + targetAddr +
                              " for " + targetBlock.getBlock());
@@ -903,6 +904,7 @@ public class DFSInputStream extends FSInputStream
             DFSClient.LOG.info("Conglong Read Est 903");
             currentNode = blockSeekTo(pos);
           }
+          DFSClient.LOG.info("Conglong Read Est 907");
           int realLen = (int) Math.min(len, (blockEnd - pos + 1L));
           synchronized(infoLock) {
             if (locatedBlocks.isLastBlockComplete()) {
