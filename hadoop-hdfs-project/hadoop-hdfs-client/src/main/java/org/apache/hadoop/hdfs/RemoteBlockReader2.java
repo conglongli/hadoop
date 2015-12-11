@@ -402,6 +402,8 @@ public class RemoteBlockReader2  implements BlockReader {
     // in and out will be closed when sock is closed (by the caller)
     final DataOutputStream out = new DataOutputStream(new BufferedOutputStream(
         peer.getOutputStream()));
+    DFSClient.LOG.info("Conglong Read Est 405 RemoteBlockReader2 Starting read blockId {} length {} from datanode {}",
+        block.getBlockId(), block.getNumBytes(), datanodeID.getHostName());
     new Sender(out).readBlock(block, blockToken, clientName, startOffset, len,
         verifyChecksum, cachingStrategy);
 
