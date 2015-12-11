@@ -738,8 +738,8 @@ class BlockSender implements java.io.Closeable {
     manageOsCache();
 
     final long startTime = ClientTraceLog.isDebugEnabled() ? System.nanoTime() : 0;
-    LOG.info("Conglong Read Act 741 BlockSender Start Sending blockId {} length {} from {}",
-          block.getBlockId(), block.getNumBytes(), datanode.getHostName((datanode.getDnConf()).getConf()));
+    LOG.info("Conglong Read Act 741 BlockSender Start Sending blockId {} length {}",
+          block.getBlockId(), block.getNumBytes());
     try {
       int maxChunksPerPacket;
       int pktBufSize = PacketHeader.PKT_MAX_HEADER_LEN;
