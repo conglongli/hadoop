@@ -665,6 +665,8 @@ class DataXceiver extends Receiver implements Runnable {
     }
     LOG.info("Receiving " + block + " src: " + remoteAddress + " dest: "
         + localAddress);
+    LOG.info("Conglong Write Act 668 DataXceiver Start Receiving blockId {} length {} from {} to {}",
+          block.getBlockId(), block.getNumBytes(), remoteAddress, localAddress);
 
     // reply to upstream datanode or client 
     final DataOutputStream replyOut = getBufferedOutputStream();
