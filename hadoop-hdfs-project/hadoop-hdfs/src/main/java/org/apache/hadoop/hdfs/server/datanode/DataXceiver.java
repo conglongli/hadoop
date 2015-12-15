@@ -516,6 +516,8 @@ class DataXceiver extends Receiver implements Runnable {
       final long length,
       final boolean sendChecksum,
       final CachingStrategy cachingStrategy) throws IOException {
+    LOG.info("Conglong Read Act 519 DataXceiver Start Sending blockId {} length {} from {} to {}",
+          block.getBlockId(), length, localAddress, remoteAddress);
     previousOpClientName = clientName;
     long read = 0;
     OutputStream baseStream = getOutputStream();
