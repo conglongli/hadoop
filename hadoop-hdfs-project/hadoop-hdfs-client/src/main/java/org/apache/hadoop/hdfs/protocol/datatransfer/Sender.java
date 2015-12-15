@@ -81,7 +81,7 @@ public class Sender implements DataTransferProtocol {
           ((OpReadBlockProto)proto).getHeader().getBaseHeader().getBlock().getBlockId(),
           ((OpReadBlockProto)proto).getHeader().getBaseHeader().getBlock().getNumBytes());
     default:
-      throw new IOException("Unknown op " + op + " in data stream");
+      throw new IOException("Unknown op " + opcode + " in data stream");
     }
     proto.writeDelimitedTo(out);
     out.flush();
