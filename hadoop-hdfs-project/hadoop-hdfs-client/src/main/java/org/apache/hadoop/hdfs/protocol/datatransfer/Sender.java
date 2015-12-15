@@ -108,7 +108,8 @@ public class Sender implements DataTransferProtocol {
         .setSendChecksums(sendChecksum)
         .setCachingStrategy(getCachingStrategy(cachingStrategy))
         .build();
-
+    LOG.info("Conglong Read Est 111 Sender Starting read blockId {} length {}",
+        blk.getBlockId(), blk.getNumBytes());
     send(out, Op.READ_BLOCK, proto);
   }
 
