@@ -78,8 +78,8 @@ public class Sender implements DataTransferProtocol {
     switch(opcode) {
     case READ_BLOCK:
       LOG.info("Conglong Read Est 81 Sender Starting read blockId {} length {}",
-          (OpReadBlockProto)proto.getHeader().getBaseHeader().getBlock().getBlockId(),
-          (OpReadBlockProto)proto.getHeader().getBaseHeader().getBlock().getNumBytes());
+          ((OpReadBlockProto)proto).getHeader().getBaseHeader().getBlock().getBlockId(),
+          ((OpReadBlockProto)proto).getHeader().getBaseHeader().getBlock().getNumBytes());
     default:
       throw new IOException("Unknown op " + op + " in data stream");
     }
