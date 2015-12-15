@@ -75,13 +75,17 @@ public class Sender implements DataTransferProtocol {
     LOG.trace("Sending DataTransferOp {}: {}",
         proto.getClass().getSimpleName(), proto);
     op(out, opcode);
-    if (opcode == READ_BLOCK) {
+    switch(opcode) {
+    case READ_BLOCK:
       LOG.info("Conglong Read Est 81 Sender Starting read blockId {} length {}",
           ((OpReadBlockProto)proto).getHeader().getBaseHeader().getBlock().getBlockId(),
           ((OpReadBlockProto)proto).getHeader().getBaseHeader().getBlock().getNumBytes());
+      proto.writeDelimitedTo(out);
+      out.flush();
+    default:
+      proto.writeDelimitedTo(out);
+      out.flush();
     }
-    proto.writeDelimitedTo(out);
-    out.flush();
   }
 
   static private CachingStrategyProto getCachingStrategy(
