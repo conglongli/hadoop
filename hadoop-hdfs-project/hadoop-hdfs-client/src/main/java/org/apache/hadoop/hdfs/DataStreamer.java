@@ -1594,11 +1594,15 @@ class DataStreamer extends Daemon {
 
         boolean[] targetPinnings = getPinnings(nodes);
         // send the request
+        LOG.info("Conglong Write Est 1597 DataStreamer Start writing blockId {} length {} from client to {}",
+              block.getBlockId(), block.getNumBytes(), nodes[0].getHostName());
         new Sender(out).writeBlock(blockCopy, nodeStorageTypes[0], accessToken,
             dfsClient.clientName, nodes, nodeStorageTypes, null, bcs,
             nodes.length, block.getNumBytes(), bytesSent, newGS,
             checksum4WriteBlock, cachingStrategy.get(), isLazyPersistFile,
             (targetPinnings != null && targetPinnings[0]), targetPinnings);
+        LOG.info("Conglong Write Est 1604 DataStreamer Start writing blockId {} length {} from client to {}",
+              block.getBlockId(), block.getNumBytes(), nodes[0].getHostName());
 
         // receive ack for connect
         BlockOpResponseProto resp = BlockOpResponseProto.parseFrom(
