@@ -74,7 +74,13 @@ public class Sender implements DataTransferProtocol {
       final Message proto) throws IOException {
     LOG.trace("Sending DataTransferOp {}: {}",
         proto.getClass().getSimpleName(), proto);
+    LOG.info("Conglong Read Est 77 Sender Starting read blockId {} length {}",
+        proto.getHeader().getBaseHeader().getBlock().getBlockId(),
+        proto.getHeader().getBaseHeader().getBlock().getNumBytes());
     op(out, opcode);
+    LOG.info("Conglong Read Est 81 Sender Starting read blockId {} length {}",
+        proto.getHeader().getBaseHeader().getBlock().getBlockId(),
+        proto.getHeader().getBaseHeader().getBlock().getNumBytes());
     proto.writeDelimitedTo(out);
     out.flush();
   }
