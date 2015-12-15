@@ -75,13 +75,10 @@ public class Sender implements DataTransferProtocol {
     LOG.trace("Sending DataTransferOp {}: {}",
         proto.getClass().getSimpleName(), proto);
     op(out, opcode);
-    switch(opcode) {
-    case READ_BLOCK:
+    if (opcode == READ_BLOCK) {
       LOG.info("Conglong Read Est 81 Sender Starting read blockId {} length {}",
           ((OpReadBlockProto)proto).getHeader().getBaseHeader().getBlock().getBlockId(),
           ((OpReadBlockProto)proto).getHeader().getBaseHeader().getBlock().getNumBytes());
-    default:
-      throw new IOException("Unknown op " + opcode + " in data stream");
     }
     proto.writeDelimitedTo(out);
     out.flush();
