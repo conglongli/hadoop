@@ -66,7 +66,9 @@ public class Sender implements DataTransferProtocol {
 
   /** Initialize a operation. */
   private static void op(final DataOutput out, final Op op) throws IOException {
+    LOG.info("Conglong Read Est 69 Sender Starting read");
     out.writeShort(DataTransferProtocol.DATA_TRANSFER_VERSION);
+    LOG.info("Conglong Read Est 71 Sender Starting read");
     op.write(out);
   }
 
@@ -74,6 +76,9 @@ public class Sender implements DataTransferProtocol {
       final Message proto) throws IOException {
     LOG.trace("Sending DataTransferOp {}: {}",
         proto.getClass().getSimpleName(), proto);
+    LOG.info("Conglong Read Est 77 Sender Starting read blockId {} length {}",
+          ((OpReadBlockProto)proto).getHeader().getBaseHeader().getBlock().getBlockId(),
+          ((OpReadBlockProto)proto).getHeader().getBaseHeader().getBlock().getNumBytes());
     op(out, opcode);
     switch(opcode) {
     case READ_BLOCK:
