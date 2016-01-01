@@ -267,8 +267,8 @@ public class DFSInputStream extends FSInputStream
       while (iter.hasNext()) {
         LocatedBlock blk = iter.next();
         for(DatanodeInfo datanode : blk.getLocations()) {
-          DFSClient.LOG.info("Conglong Read Est 270 DFSInputStream Starting read blockId {} length {} from datanode {}",
-              (blk.getBlock()).getBlockId(), blk.getBlockSize(), datanode.getHostName());
+          //DFSClient.LOG.info("Conglong Read Est 270 DFSInputStream Starting read blockId {} length {} from datanode {}",
+          //    (blk.getBlock()).getBlockId(), blk.getBlockSize(), datanode.getHostName());
         }
       }
     }
@@ -628,7 +628,7 @@ public class DFSInputStream extends FSInputStream
         blockReader = getBlockReader(targetBlock, offsetIntoBlock,
             targetBlock.getBlockSize() - offsetIntoBlock, targetAddr,
             storageType, chosenNode);
-        DFSClient.LOG.info("Conglong Read Est 631");
+        //DFSClient.LOG.info("Conglong Read Est 631");
         if(connectFailedOnce) {
           DFSClient.LOG.info("Successfully connected to " + targetAddr +
                              " for " + targetBlock.getBlock());
@@ -663,20 +663,20 @@ public class DFSInputStream extends FSInputStream
     Token<BlockTokenIdentifier> accessToken = targetBlock.getBlockToken();
     CachingStrategy curCachingStrategy;
     boolean shortCircuitForbidden;
-    DFSClient.LOG.info("Conglong Read Est 655 DFSInputStream Starting read blockId {} length {} from datanode {}",
-        blk.getBlockId(), length, datanode.getHostName());
+    //DFSClient.LOG.info("Conglong Read Est 655 DFSInputStream Starting read blockId {} length {} from datanode {}",
+    //    blk.getBlockId(), length, datanode.getHostName());
     synchronized (infoLock) {
-      DFSClient.LOG.info("Conglong Read Est 669 DFSInputStream Starting read blockId {} length {} from datanode {}",
-        blk.getBlockId(), length, datanode.getHostName());
+      //DFSClient.LOG.info("Conglong Read Est 669 DFSInputStream Starting read blockId {} length {} from datanode {}",
+      //  blk.getBlockId(), length, datanode.getHostName());
       curCachingStrategy = cachingStrategy;
-      DFSClient.LOG.info("Conglong Read Est 672 DFSInputStream Starting read blockId {} length {} from datanode {}",
-        blk.getBlockId(), length, datanode.getHostName());
+      //DFSClient.LOG.info("Conglong Read Est 672 DFSInputStream Starting read blockId {} length {} from datanode {}",
+      //  blk.getBlockId(), length, datanode.getHostName());
       shortCircuitForbidden = shortCircuitForbidden();
-      DFSClient.LOG.info("Conglong Read Est 675 DFSInputStream Starting read blockId {} length {} from datanode {}",
-        blk.getBlockId(), length, datanode.getHostName());
+      //DFSClient.LOG.info("Conglong Read Est 675 DFSInputStream Starting read blockId {} length {} from datanode {}",
+      //  blk.getBlockId(), length, datanode.getHostName());
     }
-    DFSClient.LOG.info("Conglong Read Est 678 DFSInputStream Starting read blockId {} length {} from datanode {}",
-        blk.getBlockId(), length, datanode.getHostName());
+    //DFSClient.LOG.info("Conglong Read Est 678 DFSInputStream Starting read blockId {} length {} from datanode {}",
+    //    blk.getBlockId(), length, datanode.getHostName());
     return new BlockReaderFactory(dfsClient.getConf()).
         setInetSocketAddress(targetAddr).
         setRemotePeerFactory(dfsClient).
@@ -857,8 +857,8 @@ public class DFSInputStream extends FSInputStream
     while (true) {
       // retry as many times as seekToNewSource allows.
       try {
-        DFSClient.LOG.info("Conglong Read Est 851 DFSInputStream Starting read blockId {} length {} from datanode {}",
-            getCurrentBlock().getBlockId(), getCurrentBlock().getNumBytes(), currentNode.getHostName());
+        //DFSClient.LOG.info("Conglong Read Est 851 DFSInputStream Starting read blockId {} length {} from datanode {}",
+        //    getCurrentBlock().getBlockId(), getCurrentBlock().getNumBytes(), currentNode.getHostName());
         return reader.doRead(blockReader, off, len);
       } catch ( ChecksumException ce ) {
         DFSClient.LOG.warn("Found Checksum error for "
@@ -909,10 +909,10 @@ public class DFSInputStream extends FSInputStream
           // currentNode can be left as null if previous read had a checksum
           // error on the same block. See HDFS-3067
           if (pos > blockEnd || currentNode == null) {
-            DFSClient.LOG.info("Conglong Read Est 903");
+            //DFSClient.LOG.info("Conglong Read Est 903");
             currentNode = blockSeekTo(pos);
           }
-          DFSClient.LOG.info("Conglong Read Est 907");
+          //DFSClient.LOG.info("Conglong Read Est 907");
           int realLen = (int) Math.min(len, (blockEnd - pos + 1L));
           synchronized(infoLock) {
             if (locatedBlocks.isLastBlockComplete()) {
@@ -920,7 +920,7 @@ public class DFSInputStream extends FSInputStream
                   locatedBlocks.getFileLength() - pos);
             }
           }
-          DFSClient.LOG.info("Conglong Read Est 912");
+          //DFSClient.LOG.info("Conglong Read Est 912");
           int result = readBuffer(strategy, off, realLen, corruptedBlockMap);
 
           if (result >= 0) {
@@ -964,10 +964,10 @@ public class DFSInputStream extends FSInputStream
     ReaderStrategy byteArrayReader = new ByteArrayStrategy(buf);
     try (TraceScope ignored =
              dfsClient.newPathTraceScope("DFSInputStream#byteArrayRead", src)) {
-      if (getCurrentBlock() != null && currentNode != null) {
-        DFSClient.LOG.info("Conglong Read Est 955 DFSInputStream Starting read blockId {} length {} from datanode {}",
-            getCurrentBlock().getBlockId(), getCurrentBlock().getNumBytes(), currentNode.getHostName());
-      }
+      //if (getCurrentBlock() != null && currentNode != null) {
+        //DFSClient.LOG.info("Conglong Read Est 955 DFSInputStream Starting read blockId {} length {} from datanode {}",
+        //    getCurrentBlock().getBlockId(), getCurrentBlock().getNumBytes(), currentNode.getHostName());
+      //}
       return readWithStrategy(byteArrayReader, off, len);
     }
   }
@@ -977,10 +977,10 @@ public class DFSInputStream extends FSInputStream
     ReaderStrategy byteBufferReader = new ByteBufferStrategy(buf);
     try (TraceScope ignored =
              dfsClient.newPathTraceScope("DFSInputStream#byteBufferRead", src)){
-      if (getCurrentBlock() != null && currentNode != null) {
-        DFSClient.LOG.info("Conglong Read Est 966 DFSInputStream Starting read blockId {} length {} from datanode {}",
-            getCurrentBlock().getBlockId(), getCurrentBlock().getNumBytes(), currentNode.getHostName());
-      }
+      //if (getCurrentBlock() != null && currentNode != null) {
+        //DFSClient.LOG.info("Conglong Read Est 966 DFSInputStream Starting read blockId {} length {} from datanode {}",
+        //    getCurrentBlock().getBlockId(), getCurrentBlock().getNumBytes(), currentNode.getHostName());
+      //}
       return readWithStrategy(byteBufferReader, 0, buf.remaining());
     }
   }
@@ -1072,8 +1072,8 @@ public class DFSInputStream extends FSInputStream
         if (!deadNodes.containsKey(nodes[i])
             && (ignoredNodes == null || !ignoredNodes.contains(nodes[i]))) {
           chosenNode = nodes[i];
-          DFSClient.LOG.info("Conglong Read Est 1053 DFSInputStream Starting read blockId {} length {} from datanode {}",
-              (block.getBlock()).getBlockId(), block.getBlockSize(), nodes[i].getHostName());
+          //DFSClient.LOG.info("Conglong Read Est 1053 DFSInputStream Starting read blockId {} length {} from datanode {}",
+          //    (block.getBlock()).getBlockId(), block.getBlockSize(), nodes[i].getHostName());
           // Storage types are ordered to correspond with nodes, so use the same
           // index to get storage type.
           if (storageTypes != null && i < storageTypes.length) {
@@ -1200,8 +1200,8 @@ public class DFSInputStream extends FSInputStream
         DFSClientFaultInjector.get().fetchFromDatanodeException();
         reader = getBlockReader(block, startInBlk, len, datanode.addr,
             datanode.storageType, datanode.info);
-        DFSClient.LOG.info("Conglong Read Est 1169 DFSInputStream Starting read blockId {} length {} from datanode {}",
-            (block.getBlock()).getBlockId(), len, (datanode.info).getHostName());
+        //DFSClient.LOG.info("Conglong Read Est 1169 DFSInputStream Starting read blockId {} length {} from datanode {}",
+        //    (block.getBlock()).getBlockId(), len, (datanode.info).getHostName());
         int nread = reader.readAll(buf, offset, len);
         updateReadStatistics(readStatistics, nread, reader);
         if (nread != len) {

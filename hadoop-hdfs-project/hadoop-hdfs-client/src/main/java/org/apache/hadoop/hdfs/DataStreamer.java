@@ -608,8 +608,10 @@ class DataStreamer extends Daemon {
           while (listIterator.hasNext()) {
             queueLen += (listIterator.next()).getDataLen();
           }
-          LOG.info("Conglong Write Est 610 DataStreamer Start writing blockId {} length {} from client to {}",
-              block.getBlockId(), queueLen, nodes[0].getHostName());
+          if (queueLen > 0) {
+            LOG.info("Conglong Write Est 610 DataStreamer Start writing blockId {} length {} from client to {}",
+                block.getBlockId(), queueLen, nodes[0].getHostName());
+          }
           if (nodes.length > 1) {
             for (int i=0; i < nodes.length-1; i++) {
               LOG.info("Conglong Write Est 614 DataStreamer Start writing blockId {} length {} from {} to {}",
@@ -1594,15 +1596,28 @@ class DataStreamer extends Daemon {
 
         boolean[] targetPinnings = getPinnings(nodes);
         // send the request
-        LOG.info("Conglong Write Est 1597 DataStreamer Start writing blockId {} length {} from client to {}",
-              block.getBlockId(), block.getNumBytes(), nodes[0].getHostName());
         new Sender(out).writeBlock(blockCopy, nodeStorageTypes[0], accessToken,
             dfsClient.clientName, nodes, nodeStorageTypes, null, bcs,
             nodes.length, block.getNumBytes(), bytesSent, newGS,
             checksum4WriteBlock, cachingStrategy.get(), isLazyPersistFile,
             (targetPinnings != null && targetPinnings[0]), targetPinnings);
-        LOG.info("Conglong Write Est 1604 DataStreamer Start writing blockId {} length {} from client to {}",
-              block.getBlockId(), block.getNumBytes(), nodes[0].getHostName());
+        long queueLen = 0;
+        if (nodes.length > 0 && dataQueue.size() > 0) {
+          ListIterator<DFSPacket> listIterator = dataQueue.listIterator();
+          while (listIterator.hasNext()) {
+            queueLen += (listIterator.next()).getDataLen();
+          }
+          if (queueLen > 0) {
+            LOG.info("Conglong Write Est 1604 DataStreamer Start writing blockId {} length {} from client to {}",
+                block.getBlockId(), queueLen, nodes[0].getHostName());
+          }
+          if (queueLen > 0 && nodes.length > 1) {
+            for (int i=0; i < nodes.length-1; i++) {
+              LOG.info("Conglong Write Est 1616 DataStreamer Start writing blockId {} length {} from {} to {}",
+                  block.getBlockId(), queueLen, nodes[i].getHostName(), nodes[i+1].getHostName());
+            }
+          }
+        }
 
         // receive ack for connect
         BlockOpResponseProto resp = BlockOpResponseProto.parseFrom(
