@@ -74,7 +74,6 @@ public class Sender implements DataTransferProtocol {
       final Message proto) throws IOException {
     LOG.trace("Sending DataTransferOp {}: {}",
         proto.getClass().getSimpleName(), proto);
-    LOG.info("Conglong Read Est 77 Sender");
     switch(opcode) {
     case READ_BLOCK:
       LOG.info("Conglong Read Est 81 Sender Starting read blockId {} length {}",

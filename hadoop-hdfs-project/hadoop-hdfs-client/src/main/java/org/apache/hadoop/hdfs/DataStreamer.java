@@ -609,8 +609,8 @@ class DataStreamer extends Daemon {
             queueLen += (listIterator.next()).getDataLen();
           }
           if (queueLen > 0) {
-            LOG.info("Conglong Write Est 610 DataStreamer Start writing blockId {} length {} from client to {}",
-                block.getBlockId(), queueLen, nodes[0].getHostName());
+            LOG.info("Conglong Write Est 610 DataStreamer Start writing blockId {} length {} from {} to {}",
+                block.getBlockId(), queueLen, dfsClient.getClientName(), nodes[0].getHostName());
           }
           if (nodes.length > 1) {
             for (int i=0; i < nodes.length-1; i++) {
@@ -667,8 +667,8 @@ class DataStreamer extends Daemon {
         try (TraceScope ignored = dfsClient.getTracer().
             newScope("DataStreamer#writeTo", spanId)) {
           if (queueLen > 0) {
-            LOG.info("Conglong Write Act 666 DataStreamer Start writing blockId {} length {} from client to {}",
-                block.getBlockId(), queueLen, nodes[0].getHostName());
+            LOG.info("Conglong Write Act 666 DataStreamer Start writing blockId {} length {} from {} to {}",
+                block.getBlockId(), queueLen, dfsClient.getClientName(), nodes[0].getHostName());
           }
           one.writeTo(blockStream);
           blockStream.flush();
@@ -1608,8 +1608,8 @@ class DataStreamer extends Daemon {
             queueLen += (listIterator.next()).getDataLen();
           }
           if (queueLen > 0) {
-            LOG.info("Conglong Write Est 1604 DataStreamer Start writing blockId {} length {} from client to {}",
-                block.getBlockId(), queueLen, nodes[0].getHostName());
+            LOG.info("Conglong Write Est 1604 DataStreamer Start writing blockId {} length {} from {} to {}",
+                block.getBlockId(), queueLen, dfsClient.getClientName(), nodes[0].getHostName());
           }
           if (queueLen > 0 && nodes.length > 1) {
             for (int i=0; i < nodes.length-1; i++) {
