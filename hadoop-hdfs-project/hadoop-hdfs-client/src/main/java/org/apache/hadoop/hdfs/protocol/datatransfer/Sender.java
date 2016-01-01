@@ -72,7 +72,7 @@ public class Sender implements DataTransferProtocol {
 
   private static void send(final DataOutputStream out, final Op opcode,
       final Message proto) throws IOException {
-    LOG.info("Conglong Read Est 75 Sender"};
+    LOG.info("Conglong Read Est 75 Sender");
     LOG.trace("Sending DataTransferOp {}: {}",
         proto.getClass().getSimpleName(), proto);
     switch(opcode) {
@@ -88,7 +88,7 @@ public class Sender implements DataTransferProtocol {
       proto.writeDelimitedTo(out);
       out.flush();
     }
-    LOG.info("Conglong Read Est 91 Sender"};
+    LOG.info("Conglong Read Est 91 Sender");
   }
 
   static private CachingStrategyProto getCachingStrategy(
@@ -123,7 +123,7 @@ public class Sender implements DataTransferProtocol {
     LOG.info("Conglong Read Est 111 Sender Starting read blockId {} length {}",
         blk.getBlockId(), blk.getNumBytes());
     send(out, Op.READ_BLOCK, proto);
-    LOG.info("Conglong Read Est 124 Sender"};
+    LOG.info("Conglong Read Est 124 Sender");
   }
 
 
