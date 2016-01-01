@@ -1595,29 +1595,44 @@ class DataStreamer extends Daemon {
         blockCopy.setNumBytes(stat.getBlockSize());
 
         boolean[] targetPinnings = getPinnings(nodes);
-        // send the request
-        new Sender(out).writeBlock(blockCopy, nodeStorageTypes[0], accessToken,
-            dfsClient.clientName, nodes, nodeStorageTypes, null, bcs,
-            nodes.length, block.getNumBytes(), bytesSent, newGS,
-            checksum4WriteBlock, cachingStrategy.get(), isLazyPersistFile,
-            (targetPinnings != null && targetPinnings[0]), targetPinnings);
+
         long queueLen = 0;
         if (nodes.length > 0 && dataQueue.size() > 0) {
           ListIterator<DFSPacket> listIterator = dataQueue.listIterator();
           while (listIterator.hasNext()) {
             queueLen += (listIterator.next()).getDataLen();
           }
-          if (queueLen > 0) {
-            LOG.info("Conglong Write Est 1604 DataStreamer Start writing blockId {} length {} from {} to {}",
-                block.getBlockId(), queueLen, dfsClient.getClientName(), nodes[0].getHostName());
-          }
-          if (queueLen > 0 && nodes.length > 1) {
-            for (int i=0; i < nodes.length-1; i++) {
-              LOG.info("Conglong Write Est 1616 DataStreamer Start writing blockId {} length {} from {} to {}",
-                  block.getBlockId(), queueLen, nodes[i].getHostName(), nodes[i+1].getHostName());
-            }
+        }
+
+        if (queueLen > 0) {
+          LOG.info("Conglong Write Est 1608 DataStreamer Start writing blockId {} length {} from {} to {}",
+              block.getBlockId(), queueLen, dfsClient.getClientName(), nodes[0].getHostName());
+        }
+        if (queueLen > 0 && nodes.length > 1) {
+          for (int i=0; i < nodes.length-1; i++) {
+            LOG.info("Conglong Write Est 1613 DataStreamer Start writing blockId {} length {} from {} to {}",
+                block.getBlockId(), queueLen, nodes[i].getHostName(), nodes[i+1].getHostName());
           }
         }
+
+        // send the request
+        new Sender(out).writeBlock(blockCopy, nodeStorageTypes[0], accessToken,
+            dfsClient.clientName, nodes, nodeStorageTypes, null, bcs,
+            nodes.length, block.getNumBytes(), bytesSent, newGS,
+            checksum4WriteBlock, cachingStrategy.get(), isLazyPersistFile,
+            (targetPinnings != null && targetPinnings[0]), targetPinnings);
+
+        if (queueLen > 0) {
+          LOG.info("Conglong Write Est 1626 DataStreamer Start writing blockId {} length {} from {} to {}",
+              block.getBlockId(), queueLen, dfsClient.getClientName(), nodes[0].getHostName());
+        }
+        if (queueLen > 0 && nodes.length > 1) {
+          for (int i=0; i < nodes.length-1; i++) {
+            LOG.info("Conglong Write Est 1631 DataStreamer Start writing blockId {} length {} from {} to {}",
+                block.getBlockId(), queueLen, nodes[i].getHostName(), nodes[i+1].getHostName());
+          }
+        }
+        
 
         // receive ack for connect
         BlockOpResponseProto resp = BlockOpResponseProto.parseFrom(
