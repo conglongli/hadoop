@@ -72,23 +72,30 @@ public class Sender implements DataTransferProtocol {
 
   private static void send(final DataOutputStream out, final Op opcode,
       final Message proto) throws IOException {
-    LOG.info("Conglong Read Est 75 Sender");
     LOG.trace("Sending DataTransferOp {}: {}",
         proto.getClass().getSimpleName(), proto);
-    switch(opcode) {
-    case READ_BLOCK:
-      //LOG.info("Conglong Read Est 81 Sender Starting read blockId {} length {}",
-      //    ((OpReadBlockProto)proto).getHeader().getBaseHeader().getBlock().getBlockId(),
-      //    ((OpReadBlockProto)proto).getHeader().getBaseHeader().getBlock().getNumBytes());
-      op(out, opcode);
-      proto.writeDelimitedTo(out);
-      out.flush();
-    default:
-      op(out, opcode);
-      proto.writeDelimitedTo(out);
-      out.flush();
-    }
-    LOG.info("Conglong Read Est 91 Sender");
+    op(out, opcode);
+    proto.writeDelimitedTo(out);
+    out.flush();
+  }
+
+  private static void send_readblock(final DataOutputStream out, final Op opcode,
+      final Message proto, final ExtendedBlock blk) throws IOException {
+    LOG.info("Conglong Read Est 84 Sender Starting read blockId {} length {}",
+        blk.getBlockId(), blk.getNumBytes());
+    LOG.trace("Sending DataTransferOp {}: {}",
+        proto.getClass().getSimpleName(), proto);
+    LOG.info("Conglong Read Est 88 Sender Starting read blockId {} length {}",
+        blk.getBlockId(), blk.getNumBytes());
+    op(out, opcode);
+    LOG.info("Conglong Read Est 91 Sender Starting read blockId {} length {}",
+        blk.getBlockId(), blk.getNumBytes());
+    proto.writeDelimitedTo(out);
+    LOG.info("Conglong Read Est 94 Sender Starting read blockId {} length {}",
+        blk.getBlockId(), blk.getNumBytes());
+    out.flush();
+    LOG.info("Conglong Read Est 97 Sender Starting read blockId {} length {}",
+        blk.getBlockId(), blk.getNumBytes());
   }
 
   static private CachingStrategyProto getCachingStrategy(
@@ -122,7 +129,8 @@ public class Sender implements DataTransferProtocol {
         .build();
     LOG.info("Conglong Read Est 111 Sender Starting read blockId {} length {}",
         blk.getBlockId(), blk.getNumBytes());
-    send(out, Op.READ_BLOCK, proto);
+    //send(out, Op.READ_BLOCK, proto);
+    send_readblock(out, Op.READ_BLOCK, proto, blk);
     LOG.info("Conglong Read Est 124 Sender");
   }
 
