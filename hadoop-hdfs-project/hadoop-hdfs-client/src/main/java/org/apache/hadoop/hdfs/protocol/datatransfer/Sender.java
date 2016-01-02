@@ -83,8 +83,8 @@ public class Sender implements DataTransferProtocol {
       final Message proto, final ExtendedBlock blk) throws IOException {
     LOG.info("Conglong Read Est 84 Sender Starting read blockId {} length {}",
         blk.getBlockId(), blk.getNumBytes());
-    LOG.trace("Sending DataTransferOp {}: {}",
-        proto.getClass().getSimpleName(), proto);
+    //LOG.trace("Sending DataTransferOp {}: {}",
+    //    proto.getClass().getSimpleName(), proto);
     LOG.info("Conglong Read Est 88 Sender Starting read blockId {} length {}",
         blk.getBlockId(), blk.getNumBytes());
     op(out, opcode);
@@ -102,8 +102,8 @@ public class Sender implements DataTransferProtocol {
       final Message proto, final ExtendedBlock blk) throws IOException {
     LOG.info("Conglong Write Est 103 Sender Starting read blockId {} length {}",
         blk.getBlockId(), blk.getNumBytes());
-    LOG.trace("Sending DataTransferOp {}: {}",
-        proto.getClass().getSimpleName(), proto);
+    //LOG.trace("Sending DataTransferOp {}: {}",
+    //    proto.getClass().getSimpleName(), proto);
     LOG.info("Conglong Write Est 107 Sender Starting read blockId {} length {}",
         blk.getBlockId(), blk.getNumBytes());
     op(out, opcode);
@@ -137,7 +137,8 @@ public class Sender implements DataTransferProtocol {
       final long length,
       final boolean sendChecksum,
       final CachingStrategy cachingStrategy) throws IOException {
-
+    LOG.info("Conglong Read Est 140 Sender Starting read blockId {} length {}",
+        blk.getBlockId(), blk.getNumBytes());
     OpReadBlockProto proto = OpReadBlockProto.newBuilder()
         .setHeader(DataTransferProtoUtil.buildClientHeader(blk, clientName,
             blockToken))
@@ -146,11 +147,11 @@ public class Sender implements DataTransferProtocol {
         .setSendChecksums(sendChecksum)
         .setCachingStrategy(getCachingStrategy(cachingStrategy))
         .build();
-    LOG.info("Conglong Read Est 111 Sender Starting read blockId {} length {}",
+    LOG.info("Conglong Read Est 150 Sender Starting read blockId {} length {}",
         blk.getBlockId(), blk.getNumBytes());
     //send(out, Op.READ_BLOCK, proto);
     send_readblock(out, Op.READ_BLOCK, proto, blk);
-    LOG.info("Conglong Read Est 124 Sender");
+    LOG.info("Conglong Read Est 154 Sender");
   }
 
 
