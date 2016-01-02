@@ -77,9 +77,9 @@ public class Sender implements DataTransferProtocol {
         proto.getClass().getSimpleName(), proto);
     switch(opcode) {
     case READ_BLOCK:
-      LOG.info("Conglong Read Est 81 Sender Starting read blockId {} length {}",
-          ((OpReadBlockProto)proto).getHeader().getBaseHeader().getBlock().getBlockId(),
-          ((OpReadBlockProto)proto).getHeader().getBaseHeader().getBlock().getNumBytes());
+      //LOG.info("Conglong Read Est 81 Sender Starting read blockId {} length {}",
+      //    ((OpReadBlockProto)proto).getHeader().getBaseHeader().getBlock().getBlockId(),
+      //    ((OpReadBlockProto)proto).getHeader().getBaseHeader().getBlock().getNumBytes());
       op(out, opcode);
       proto.writeDelimitedTo(out);
       out.flush();
