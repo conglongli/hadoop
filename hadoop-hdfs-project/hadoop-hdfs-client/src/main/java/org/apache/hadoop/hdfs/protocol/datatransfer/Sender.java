@@ -200,7 +200,7 @@ public class Sender implements DataTransferProtocol {
       proto.setSource(PBHelperClient.convertDatanodeInfo(source));
     }
 
-    send(out, Op.WRITE_BLOCK, proto.build());
+    //send(out, Op.WRITE_BLOCK, proto.build());
     send_writeblock(out, Op.WRITE_BLOCK, proto.build(), blk);
   }
 
