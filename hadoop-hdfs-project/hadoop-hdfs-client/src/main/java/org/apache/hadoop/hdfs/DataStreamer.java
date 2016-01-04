@@ -1603,7 +1603,7 @@ class DataStreamer extends Daemon {
             queueLen += (listIterator.next()).getDataLen();
           }
         }
-
+        /*
         if (queueLen > 0) {
           LOG.info("Conglong Write Est 1608 DataStreamer Start writing blockId {} length {} from {} to {}",
               block.getBlockId(), queueLen, s.getLocalAddress(), nodes[0].getHostName());
@@ -1614,7 +1614,7 @@ class DataStreamer extends Daemon {
                 block.getBlockId(), queueLen, nodes[i].getHostName(), nodes[i+1].getHostName());
           }
         }
-
+        */
         // send the request
         new Sender(out).writeBlock(blockCopy, nodeStorageTypes[0], accessToken,
             dfsClient.clientName, nodes, nodeStorageTypes, null, bcs,
@@ -1640,6 +1640,17 @@ class DataStreamer extends Daemon {
         Status pipelineStatus = resp.getStatus();
         firstBadLink = resp.getFirstBadLink();
 
+        if (queueLen > 0) {
+          LOG.info("Conglong Write Est 1644 DataStreamer Start writing blockId {} length {} from {} to {}",
+              block.getBlockId(), queueLen, s.getLocalAddress(), nodes[0].getHostName());
+        }
+        if (queueLen > 0 && nodes.length > 1) {
+          for (int i=0; i < nodes.length-1; i++) {
+            LOG.info("Conglong Write Est 1649 DataStreamer Start writing blockId {} length {} from {} to {}",
+                block.getBlockId(), queueLen, nodes[i].getHostName(), nodes[i+1].getHostName());
+          }
+        }
+
         // Got an restart OOB ack.
         // If a node is already restarting, this status is not likely from
         // the same node. If it is from a different node, it is not
@@ -1658,6 +1669,16 @@ class DataStreamer extends Daemon {
         blockStream = out;
         result =  true; // success
         errorState.resetInternalError();
+        if (queueLen > 0) {
+          LOG.info("Conglong Write Est 1673 DataStreamer Start writing blockId {} length {} from {} to {}",
+              block.getBlockId(), queueLen, s.getLocalAddress(), nodes[0].getHostName());
+        }
+        if (queueLen > 0 && nodes.length > 1) {
+          for (int i=0; i < nodes.length-1; i++) {
+            LOG.info("Conglong Write Est 1678 DataStreamer Start writing blockId {} length {} from {} to {}",
+                block.getBlockId(), queueLen, nodes[i].getHostName(), nodes[i+1].getHostName());
+          }
+        }
       } catch (IOException ie) {
         if (!errorState.isRestartingNode()) {
           LOG.info("Exception in createBlockOutputStream " + this, ie);

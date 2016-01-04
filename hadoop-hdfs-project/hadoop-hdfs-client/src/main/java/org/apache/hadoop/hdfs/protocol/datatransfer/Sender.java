@@ -100,21 +100,21 @@ public class Sender implements DataTransferProtocol {
 
   private static void send_writeblock(final DataOutputStream out, final Op opcode,
       final Message proto, final ExtendedBlock blk) throws IOException {
-    LOG.info("Conglong Write Est 103 Sender Starting read blockId {} length {}",
-        blk.getBlockId(), blk.getNumBytes());
+    //LOG.info("Conglong Write Est 103 Sender Starting read blockId {} length {}",
+    //    blk.getBlockId(), blk.getNumBytes());
     //LOG.trace("Sending DataTransferOp {}: {}",
     //    proto.getClass().getSimpleName(), proto);
-    LOG.info("Conglong Write Est 107 Sender Starting read blockId {} length {}",
-        blk.getBlockId(), blk.getNumBytes());
+    //LOG.info("Conglong Write Est 107 Sender Starting read blockId {} length {}",
+    //    blk.getBlockId(), blk.getNumBytes());
     op(out, opcode);
-    LOG.info("Conglong Write Est 110 Sender Starting read blockId {} length {}",
-        blk.getBlockId(), blk.getNumBytes());
+    //LOG.info("Conglong Write Est 110 Sender Starting read blockId {} length {}",
+    //    blk.getBlockId(), blk.getNumBytes());
     proto.writeDelimitedTo(out);
-    LOG.info("Conglong Write Est 113 Sender Starting read blockId {} length {}",
-        blk.getBlockId(), blk.getNumBytes());
+    //LOG.info("Conglong Write Est 113 Sender Starting read blockId {} length {}",
+    //    blk.getBlockId(), blk.getNumBytes());
     out.flush();
-    LOG.info("Conglong Write Est 116 Sender Starting read blockId {} length {}",
-        blk.getBlockId(), blk.getNumBytes());
+    //LOG.info("Conglong Write Est 116 Sender Starting read blockId {} length {}",
+    //    blk.getBlockId(), blk.getNumBytes());
   }
 
   static private CachingStrategyProto getCachingStrategy(
