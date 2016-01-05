@@ -762,10 +762,16 @@ class BlockSender implements java.io.Closeable {
       }
 
       ByteBuffer pktBuf = ByteBuffer.allocate(pktBufSize);
-      LOG.info("Conglong Read Act 765 BlockSender Start Sending blockId {} length {}",
-          block.getBlockId(), block.getNumBytes());
+      //LOG.info("Conglong Read Act 765 BlockSender Start Sending blockId {} length {}",
+      //    block.getBlockId(), block.getNumBytes());
+      int flag = 0;
       while (endOffset > offset && !Thread.currentThread().isInterrupted()) {
         manageOsCache();
+        if (flag == 0) {
+          LOG.info("Conglong Read Act 765 BlockSender Start Sending blockId {} length {}",
+              block.getBlockId(), block.getNumBytes());
+          flag = 1;
+        }
         long len = sendPacket(pktBuf, maxChunksPerPacket, streamForSendChunks,
             transferTo, throttler);
         offset += len;

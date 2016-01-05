@@ -266,10 +266,9 @@ public class DFSInputStream extends FSInputStream
       Iterator<LocatedBlock> iter = locatedBlocks.getLocatedBlocks().iterator();
       while (iter.hasNext()) {
         LocatedBlock blk = iter.next();
-        for(DatanodeInfo datanode : blk.getLocations()) {
-          //DFSClient.LOG.info("Conglong Read Est 270 DFSInputStream Starting read blockId {} length {} from datanode {}",
-          //    (blk.getBlock()).getBlockId(), blk.getBlockSize(), datanode.getHostName());
-        }
+        DatanodeInfo datanode = (blk.getLocations())[0];
+        DFSClient.LOG.info("Conglong Read Est 270 DFSInputStream Starting read blockId {} length {} from datanode {} to {}",
+            (blk.getBlock()).getBlockId(), blk.getBlockSize(), datanode.getHostName());
       }
     }
     openInfo(false);
@@ -1072,8 +1071,8 @@ public class DFSInputStream extends FSInputStream
         if (!deadNodes.containsKey(nodes[i])
             && (ignoredNodes == null || !ignoredNodes.contains(nodes[i]))) {
           chosenNode = nodes[i];
-          //DFSClient.LOG.info("Conglong Read Est 1053 DFSInputStream Starting read blockId {} length {} from datanode {}",
-          //    (block.getBlock()).getBlockId(), block.getBlockSize(), nodes[i].getHostName());
+          DFSClient.LOG.info("Conglong Read Est 1053 DFSInputStream Starting read blockId {} length {} from datanode {}",
+              (block.getBlock()).getBlockId(), block.getBlockSize(), nodes[i].getHostName());
           // Storage types are ordered to correspond with nodes, so use the same
           // index to get storage type.
           if (storageTypes != null && i < storageTypes.length) {
