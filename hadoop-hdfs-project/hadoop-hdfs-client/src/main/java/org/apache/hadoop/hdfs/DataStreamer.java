@@ -604,9 +604,11 @@ class DataStreamer extends Daemon {
         }
         long queueLen = 0;
         if (nodes.length > 0 && dataQueue.size() > 0) {
-          ListIterator<DFSPacket> listIterator = dataQueue.listIterator();
-          while (listIterator.hasNext()) {
-            queueLen += (listIterator.next()).getDataLen();
+          synchronized (dataQueue) {
+            ListIterator<DFSPacket> listIterator = dataQueue.listIterator();
+            while (listIterator.hasNext()) {
+              queueLen += (listIterator.next()).getDataLen();
+            }
           }
           if (queueLen > 0) {
             LOG.info("Conglong Write Est 610 DataStreamer Start writing blockId {} length {} from {} to {}",
@@ -1597,10 +1599,12 @@ class DataStreamer extends Daemon {
         boolean[] targetPinnings = getPinnings(nodes);
 
         long queueLen = 0;
-        if (nodes.length > 0 && dataQueue.size() > 0) {
-          ListIterator<DFSPacket> listIterator = dataQueue.listIterator();
-          while (listIterator.hasNext()) {
-            queueLen += (listIterator.next()).getDataLen();
+        synchronized (dataQueue) {
+          if (nodes.length > 0 && dataQueue.size() > 0) {
+            ListIterator<DFSPacket> listIterator = dataQueue.listIterator();
+            while (listIterator.hasNext()) {
+              queueLen += (listIterator.next()).getDataLen();
+            }
           }
         }
         /*
