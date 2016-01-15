@@ -414,6 +414,8 @@ public class DFSClient implements java.io.Closeable, RemotePeerFactory,
   }
 
   public SocketAddress[] getPubLocalInterfaceAddrs() throws UnknownHostException {
+    String localInterfaces[] =
+        conf.getTrimmedStrings(DFS_CLIENT_LOCAL_INTERFACES);
     return getLocalInterfaceAddrs(localInterfaces);
   }
 
