@@ -413,6 +413,10 @@ public class DFSClient implements java.io.Closeable, RemotePeerFactory,
     return localAddrs.toArray(new SocketAddress[localAddrs.size()]);
   }
 
+  public SocketAddress[] getPubLocalInterfaceAddrs() throws UnknownHostException {
+    return getLocalInterfaceAddrs(localInterfaces);
+  }
+
   /**
    * Select one of the configured local interfaces at random. We use a random
    * interface because other policies like round-robin are less effective

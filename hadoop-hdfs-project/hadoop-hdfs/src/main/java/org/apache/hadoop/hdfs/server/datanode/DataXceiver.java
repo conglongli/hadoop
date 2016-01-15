@@ -557,7 +557,7 @@ class DataXceiver extends Receiver implements Runnable {
       long beginRead = Time.monotonicNow();
       LOG.info("Conglong Read Act 556 DataXceiver Start Sending blockId {} length {} from {} to {}",
           block.getBlockId(), length, localAddress, remoteAddress);
-      read = blockSender.sendBlock(out, baseStream, null); // send data
+      read = blockSender.sendBlock(out, baseStream, null, localAddress, remoteAddress); // send data
       long duration = Time.monotonicNow() - beginRead;
       if (blockSender.didSendEntireByteRange()) {
         // If we sent the entire range, then we should expect the client
@@ -1045,7 +1045,7 @@ class DataXceiver extends Receiver implements Runnable {
       long beginRead = Time.monotonicNow();
       // send block content to the target
       long read = blockSender.sendBlock(reply, baseStream,
-                                        dataXceiverServer.balanceThrottler);
+                                        dataXceiverServer.balanceThrottler, localAddress, remoteAddress);
       long duration = Time.monotonicNow() - beginRead;
       datanode.metrics.incrBytesRead((int) read);
       datanode.metrics.incrBlocksRead();

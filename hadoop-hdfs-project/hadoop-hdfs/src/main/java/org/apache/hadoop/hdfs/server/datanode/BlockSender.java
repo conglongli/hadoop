@@ -707,18 +707,20 @@ class BlockSender implements java.io.Closeable {
    * @return total bytes read, including checksum data.
    */
   long sendBlock(DataOutputStream out, OutputStream baseStream, 
-                 DataTransferThrottler throttler) throws IOException {
+                 DataTransferThrottler throttler, String localAddress,
+                 String remoteAddress) throws IOException {
     final TraceScope scope = datanode.getTracer().
         newScope("sendBlock_" + block.getBlockId());
     try {
-      return doSendBlock(out, baseStream, throttler);
+      return doSendBlock(out, baseStream, throttler, localAddress, remoteAddress);
     } finally {
       scope.close();
     }
   }
 
   private long doSendBlock(DataOutputStream out, OutputStream baseStream,
-        DataTransferThrottler throttler) throws IOException {
+        DataTransferThrottler throttler, String localAddress,
+        String remoteAddress) throws IOException {
     if (out == null) {
       throw new IOException( "out stream is null" );
     }
@@ -738,8 +740,8 @@ class BlockSender implements java.io.Closeable {
     manageOsCache();
 
     final long startTime = ClientTraceLog.isDebugEnabled() ? System.nanoTime() : 0;
-    LOG.info("Conglong Read Act 741 BlockSender Start Sending blockId {} length {}",
-          block.getBlockId(), block.getNumBytes());
+    LOG.info("Conglong Read Act 741 BlockSender Start Sending blockId {} length {} from {} to {}",
+          block.getBlockId(), block.getNumBytes(), localAddress, remoteAddress);
     try {
       int maxChunksPerPacket;
       int pktBufSize = PacketHeader.PKT_MAX_HEADER_LEN;
@@ -768,8 +770,8 @@ class BlockSender implements java.io.Closeable {
       while (endOffset > offset && !Thread.currentThread().isInterrupted()) {
         manageOsCache();
         if (flag == 0) {
-          LOG.info("Conglong Read Act 765 BlockSender Start Sending blockId {} length {}",
-              block.getBlockId(), block.getNumBytes());
+          LOG.info("Conglong Read Act 765 BlockSender Start Sending blockId {} length {} from {} to {}",
+              block.getBlockId(), block.getNumBytes(), localAddress, remoteAddress);
           flag = 1;
         }
         long len = sendPacket(pktBuf, maxChunksPerPacket, streamForSendChunks,
