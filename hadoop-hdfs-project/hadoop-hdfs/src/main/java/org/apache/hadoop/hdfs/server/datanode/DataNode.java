@@ -2225,7 +2225,7 @@ public class DataNode extends ReconfigurableBase
         // send data & checksum
         LOG.info("Conglong-Act: DataNode Start Sending blockId {} length {} from {} to {}",
             b.getBlockId(), b.getNumBytes(), hostName, curTarget);
-        blockSender.sendBlock(out, unbufOut, null, hostName, curTarget);
+        blockSender.sendBlock(out, unbufOut, null, hostName, (String)curTarget);
         if (targets.length > 1) {
           LOG.info("Conglong-Est: DataNode Start Sending blockId {} length {} from {} to {}",
               b.getBlockId(), b.getNumBytes(), curTarget, targets[1].getHostName());
