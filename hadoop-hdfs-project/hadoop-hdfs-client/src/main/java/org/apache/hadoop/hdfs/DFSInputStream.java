@@ -20,6 +20,8 @@ package org.apache.hadoop.hdfs;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -267,8 +269,16 @@ public class DFSInputStream extends FSInputStream
       while (iter.hasNext()) {
         LocatedBlock blk = iter.next();
         DatanodeInfo datanode = (blk.getLocations())[0];
+        InetAddress ip;
+        String hostname;
+        try {
+            ip = InetAddress.getLocalHost();
+            hostname = ip.getHostName(); 
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         DFSClient.LOG.info("Conglong Read Est 270 DFSInputStream Starting read blockId {} length {} from datanode {} to {}",
-            (blk.getBlock()).getBlockId(), blk.getBlockSize(), datanode.getHostName(), Runtime.getRuntime().exec("hostname"));
+            (blk.getBlock()).getBlockId(), blk.getBlockSize(), datanode.getHostName(), hostname);
       }
     }
     openInfo(false);
