@@ -268,7 +268,7 @@ public class DFSInputStream extends FSInputStream
         LocatedBlock blk = iter.next();
         DatanodeInfo datanode = (blk.getLocations())[0];
         DFSClient.LOG.info("Conglong Read Est 270 DFSInputStream Starting read blockId {} length {} from datanode {} to {}",
-            (blk.getBlock()).getBlockId(), blk.getBlockSize(), datanode.getHostName());
+            (blk.getBlock()).getBlockId(), blk.getBlockSize(), datanode.getHostName(), Runtime.getRuntime().exec("hostname"));
       }
     }
     openInfo(false);
