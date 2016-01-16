@@ -270,7 +270,7 @@ public class DFSInputStream extends FSInputStream
         LocatedBlock blk = iter.next();
         DatanodeInfo datanode = (blk.getLocations())[0];
         InetAddress ip;
-        String hostname;
+        String hostname = "";
         try {
             ip = InetAddress.getLocalHost();
             hostname = ip.getHostName(); 
