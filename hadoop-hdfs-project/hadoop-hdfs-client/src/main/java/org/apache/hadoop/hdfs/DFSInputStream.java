@@ -112,6 +112,10 @@ public class DFSInputStream extends FSInputStream
   private BlockReader blockReader = null;
   ////
 
+  // Conglong
+  private InetAddress cl_ip;
+  private String cl_hostname = "";
+
   // state shared by stateful and positional read:
   // (protected by lock on infoLock)
   ////
@@ -264,21 +268,19 @@ public class DFSInputStream extends FSInputStream
       this.cachingStrategy = dfsClient.getDefaultReadCachingStrategy();
     }
     this.locatedBlocks = locatedBlocks;
+    try {
+      this.cl_ip = InetAddress.getLocalHost();
+      this.cl_hostname = (this.cl_ip).getHostName(); 
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+    }
     if (locatedBlocks != null) {
       Iterator<LocatedBlock> iter = locatedBlocks.getLocatedBlocks().iterator();
       while (iter.hasNext()) {
         LocatedBlock blk = iter.next();
         DatanodeInfo datanode = (blk.getLocations())[0];
-        InetAddress ip;
-        String hostname = "";
-        try {
-            ip = InetAddress.getLocalHost();
-            hostname = ip.getHostName(); 
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        DFSClient.LOG.info("Conglong Read Est 270 DFSInputStream Starting read blockId {} length {} from datanode {} to {}",
-            (blk.getBlock()).getBlockId(), blk.getBlockSize(), datanode.getHostName(), hostname);
+        DFSClient.LOG.info("Conglong Read Est 270 DFSInputStream Start Reading blockId {} length {} from datanode {} to {}",
+            (blk.getBlock()).getBlockId(), blk.getBlockSize(), datanode.getHostName(), this.cl_hostname);
       }
     }
     openInfo(false);
@@ -1081,8 +1083,8 @@ public class DFSInputStream extends FSInputStream
         if (!deadNodes.containsKey(nodes[i])
             && (ignoredNodes == null || !ignoredNodes.contains(nodes[i]))) {
           chosenNode = nodes[i];
-          DFSClient.LOG.info("Conglong Read Est 1053 DFSInputStream Starting read blockId {} length {} from datanode {}",
-              (block.getBlock()).getBlockId(), block.getBlockSize(), nodes[i].getHostName());
+          DFSClient.LOG.info("Conglong Read Est 1053 DFSInputStream Start Reading blockId {} length {} from datanode {} to {}",
+              (block.getBlock()).getBlockId(), block.getBlockSize(), nodes[i].getHostName(), cl_hostname);
           // Storage types are ordered to correspond with nodes, so use the same
           // index to get storage type.
           if (storageTypes != null && i < storageTypes.length) {

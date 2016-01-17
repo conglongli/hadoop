@@ -22,6 +22,8 @@ import static org.apache.hadoop.hdfs.protocol.datatransfer.DataTransferProtoUtil
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import org.apache.hadoop.classification.InterfaceAudience;
 import org.apache.hadoop.classification.InterfaceStability;
@@ -58,10 +60,19 @@ import com.google.protobuf.Message;
 @InterfaceStability.Evolving
 public class Sender implements DataTransferProtocol {
   private final DataOutputStream out;
+  // Conglong
+  private InetAddress cl_ip;
+  private String cl_hostname = "";
 
   /** Create a sender for DataTransferProtocol with a output stream. */
   public Sender(final DataOutputStream out) {
     this.out = out;
+    try {
+      this.cl_ip = InetAddress.getLocalHost();
+      this.cl_hostname = (this.cl_ip).getHostName(); 
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+    }
   }
 
   /** Initialize a operation. */
@@ -81,21 +92,21 @@ public class Sender implements DataTransferProtocol {
 
   private static void send_readblock(final DataOutputStream out, final Op opcode,
       final Message proto, final ExtendedBlock blk) throws IOException {
-    LOG.info("Conglong Read Est 84 Sender Starting read blockId {} length {}",
-        blk.getBlockId(), blk.getNumBytes());
+    //LOG.info("Conglong Read Est 84 Sender Starting read blockId {} length {}",
+    //    blk.getBlockId(), blk.getNumBytes());
     //LOG.trace("Sending DataTransferOp {}: {}",
     //    proto.getClass().getSimpleName(), proto);
-    LOG.info("Conglong Read Est 88 Sender Starting read blockId {} length {}",
-        blk.getBlockId(), blk.getNumBytes());
+    //LOG.info("Conglong Read Est 88 Sender Starting read blockId {} length {}",
+    //    blk.getBlockId(), blk.getNumBytes());
     op(out, opcode);
-    LOG.info("Conglong Read Est 91 Sender Starting read blockId {} length {}",
-        blk.getBlockId(), blk.getNumBytes());
+    //LOG.info("Conglong Read Est 91 Sender Starting read blockId {} length {}",
+    //    blk.getBlockId(), blk.getNumBytes());
     proto.writeDelimitedTo(out);
-    LOG.info("Conglong Read Est 94 Sender Starting read blockId {} length {}",
-        blk.getBlockId(), blk.getNumBytes());
+    //LOG.info("Conglong Read Est 94 Sender Starting read blockId {} length {}",
+    //    blk.getBlockId(), blk.getNumBytes());
     out.flush();
-    LOG.info("Conglong Read Est 97 Sender Starting read blockId {} length {}",
-        blk.getBlockId(), blk.getNumBytes());
+    //LOG.info("Conglong Read Est 97 Sender Starting read blockId {} length {}",
+    //    blk.getBlockId(), blk.getNumBytes());
   }
 
   private static void send_writeblock(final DataOutputStream out, final Op opcode,
@@ -137,8 +148,8 @@ public class Sender implements DataTransferProtocol {
       final long length,
       final boolean sendChecksum,
       final CachingStrategy cachingStrategy) throws IOException {
-    LOG.info("Conglong Read Est 140 Sender Starting read blockId {} length {}",
-        blk.getBlockId(), blk.getNumBytes());
+    LOG.info("Conglong Read Est 140 Sender Starting read blockId {} length {} from {} to {}",
+        blk.getBlockId(), blk.getNumBytes(), "", cl_hostname);
     OpReadBlockProto proto = OpReadBlockProto.newBuilder()
         .setHeader(DataTransferProtoUtil.buildClientHeader(blk, clientName,
             blockToken))
@@ -147,11 +158,36 @@ public class Sender implements DataTransferProtocol {
         .setSendChecksums(sendChecksum)
         .setCachingStrategy(getCachingStrategy(cachingStrategy))
         .build();
-    LOG.info("Conglong Read Est 150 Sender Starting read blockId {} length {}",
-        blk.getBlockId(), blk.getNumBytes());
+    LOG.info("Conglong Read Est 150 Sender Starting read blockId {} length {} from {} to {}",
+        blk.getBlockId(), blk.getNumBytes(), "", cl_hostname);
     //send(out, Op.READ_BLOCK, proto);
     send_readblock(out, Op.READ_BLOCK, proto, blk);
-    LOG.info("Conglong Read Est 154 Sender");
+    //LOG.info("Conglong Read Est 154 Sender");
+  }
+
+  public void readBlock2(final ExtendedBlock blk,
+      final Token<BlockTokenIdentifier> blockToken,
+      final String clientName,
+      final long blockOffset,
+      final long length,
+      final boolean sendChecksum,
+      final CachingStrategy cachingStrategy,
+      final DatanodeID datanodeID) throws IOException {
+    LOG.info("Conglong Read Est 140 Sender Starting read blockId {} length {} from {} to {}",
+        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cl_hostname);
+    OpReadBlockProto proto = OpReadBlockProto.newBuilder()
+        .setHeader(DataTransferProtoUtil.buildClientHeader(blk, clientName,
+            blockToken))
+        .setOffset(blockOffset)
+        .setLen(length)
+        .setSendChecksums(sendChecksum)
+        .setCachingStrategy(getCachingStrategy(cachingStrategy))
+        .build();
+    LOG.info("Conglong Read Est 150 Sender Starting read blockId {} length {} from {} to {}",
+        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cl_hostname);
+    //send(out, Op.READ_BLOCK, proto);
+    send_readblock(out, Op.READ_BLOCK, proto, blk);
+    //LOG.info("Conglong Read Est 154 Sender");
   }
 
 

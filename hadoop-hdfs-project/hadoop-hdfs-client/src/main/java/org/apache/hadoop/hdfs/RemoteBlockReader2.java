@@ -23,6 +23,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.util.EnumSet;
@@ -126,6 +128,10 @@ public class RemoteBlockReader2  implements BlockReader {
   private boolean sentStatusCode = false;
 
   private final Tracer tracer;
+
+  // Conglong
+  private InetAddress cl_ip;
+  private String cl_hostname = "";
 
   @VisibleForTesting
   public Peer getPeer() {
@@ -303,6 +309,13 @@ public class RemoteBlockReader2  implements BlockReader {
     bytesPerChecksum = this.checksum.getBytesPerChecksum();
     checksumSize = this.checksum.getChecksumSize();
     this.tracer = tracer;
+
+    try {
+      this.cl_ip = InetAddress.getLocalHost();
+      this.cl_hostname = (this.cl_ip).getHostName(); 
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+    }
   }
 
 
@@ -402,10 +415,12 @@ public class RemoteBlockReader2  implements BlockReader {
     // in and out will be closed when sock is closed (by the caller)
     final DataOutputStream out = new DataOutputStream(new BufferedOutputStream(
         peer.getOutputStream()));
-    DFSClient.LOG.info("Conglong Read Est 405 RemoteBlockReader2 Starting read blockId {} length {} from datanode {}",
-        block.getBlockId(), block.getNumBytes(), datanodeID.getHostName());
-    new Sender(out).readBlock(block, blockToken, clientName, startOffset, len,
-        verifyChecksum, cachingStrategy);
+    DFSClient.LOG.info("Conglong Read Est 405 RemoteBlockReader2 Start Reading blockId {} length {} from datanode {} to {}",
+        block.getBlockId(), block.getNumBytes(), datanodeID.getHostName(), cl_hostname);
+    //new Sender(out).readBlock(block, blockToken, clientName, startOffset, len,
+    //    verifyChecksum, cachingStrategy);
+    new Sender(out).readBlock2(block, blockToken, clientName, startOffset, len,
+        verifyChecksum, cachingStrategy, datanodeID);
 
     //
     // Get bytes in block

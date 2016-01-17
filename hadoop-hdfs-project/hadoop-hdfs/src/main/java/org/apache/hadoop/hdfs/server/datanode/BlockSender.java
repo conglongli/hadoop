@@ -28,6 +28,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.Arrays;
@@ -168,6 +170,10 @@ class BlockSender implements java.io.Closeable {
   private final boolean dropCacheBehindAllReads;
   
   private long lastCacheDropOffset;
+
+  // Conglong
+  private InetAddress cl_ip;
+  private String cl_hostname = "";
   
   @VisibleForTesting
   static long CACHE_DROP_INTERVAL_BYTES = 1024 * 1024; // 1MB
@@ -201,6 +207,13 @@ class BlockSender implements java.io.Closeable {
       this.corruptChecksumOk = corruptChecksumOk;
       this.verifyChecksum = verifyChecksum;
       this.clientTraceFmt = clientTraceFmt;
+
+      try {
+        this.cl_ip = InetAddress.getLocalHost();
+        this.cl_hostname = (this.cl_ip).getHostName(); 
+      } catch (UnknownHostException e) {
+        e.printStackTrace();
+      }
 
       /*
        * If the client asked for the cache to be dropped behind all reads,
@@ -741,7 +754,7 @@ class BlockSender implements java.io.Closeable {
 
     final long startTime = ClientTraceLog.isDebugEnabled() ? System.nanoTime() : 0;
     LOG.info("Conglong Read Act 741 BlockSender Start Sending blockId {} length {} from {} to {}",
-          block.getBlockId(), block.getNumBytes(), localAddress, remoteAddress);
+        block.getBlockId(), block.getNumBytes(), cl_hostname, remoteAddress);
     try {
       int maxChunksPerPacket;
       int pktBufSize = PacketHeader.PKT_MAX_HEADER_LEN;
@@ -771,7 +784,7 @@ class BlockSender implements java.io.Closeable {
         manageOsCache();
         if (flag == 0) {
           LOG.info("Conglong Read Act 765 BlockSender Start Sending blockId {} length {} from {} to {}",
-              block.getBlockId(), block.getNumBytes(), localAddress, remoteAddress);
+              block.getBlockId(), block.getNumBytes(), cl_hostname, remoteAddress);
           flag = 1;
         }
         long len = sendPacket(pktBuf, maxChunksPerPacket, streamForSendChunks,

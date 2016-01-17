@@ -28,6 +28,7 @@ import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
 import java.net.Socket;
 import java.nio.channels.ClosedChannelException;
 import java.util.ArrayList;
@@ -362,6 +363,10 @@ class DataStreamer extends Daemon {
   private volatile String[] storageIDs = null;
   private final ErrorState errorState;
 
+  // Conglong
+  private InetAddress cl_ip;
+  private String cl_hostname = "";
+
   private volatile BlockConstructionStage stage;  // block construction stage
   protected long bytesSent = 0; // number of bytes that've been sent
   private final boolean isLazyPersistFile;
@@ -434,6 +439,13 @@ class DataStreamer extends Daemon {
     this.dfsclientSlowLogThresholdMs = conf.getSlowIoWarningThresholdMs();
     this.excludedNodes = initExcludedNodes(conf.getExcludedNodesCacheExpiry());
     this.errorState = new ErrorState(conf.getDatanodeRestartTimeout());
+
+    try {
+      this.cl_ip = InetAddress.getLocalHost();
+      this.cl_hostname = (this.cl_ip).getHostName(); 
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -611,12 +623,12 @@ class DataStreamer extends Daemon {
             }
           }
           if (queueLen > 0) {
-            LOG.info("Conglong Write Est 610 DataStreamer Start writing blockId {} length {} from {} to {}",
-                block.getBlockId(), queueLen, s.getLocalAddress(), nodes[0].getHostName());
+            LOG.info("Conglong Write Est 610 DataStreamer Start Writing blockId {} length {} from {} to {}",
+                block.getBlockId(), queueLen, cl_hostname, nodes[0].getHostName());
           }
           if (nodes.length > 1) {
             for (int i=0; i < nodes.length-1; i++) {
-              LOG.info("Conglong Write Est 614 DataStreamer Start writing blockId {} length {} from {} to {}",
+              LOG.info("Conglong Write Est 614 DataStreamer Start Writing blockId {} length {} from {} to {}",
                   block.getBlockId(), queueLen, nodes[i].getHostName(), nodes[i+1].getHostName());
             }
           }
@@ -669,8 +681,8 @@ class DataStreamer extends Daemon {
         try (TraceScope ignored = dfsClient.getTracer().
             newScope("DataStreamer#writeTo", spanId)) {
           if (queueLen > 0) {
-            LOG.info("Conglong Write Act 666 DataStreamer Start writing blockId {} length {} from {} to {}",
-                block.getBlockId(), queueLen, s.getLocalAddress(), nodes[0].getHostName());
+            LOG.info("Conglong Write Act 666 DataStreamer Start Writing blockId {} length {} from {} to {}",
+                block.getBlockId(), queueLen, cl_hostname, nodes[0].getHostName());
           }
           one.writeTo(blockStream);
           blockStream.flush();
@@ -1627,12 +1639,12 @@ class DataStreamer extends Daemon {
             (targetPinnings != null && targetPinnings[0]), targetPinnings);
 
         if (queueLen > 0) {
-          LOG.info("Conglong Write Est 1626 DataStreamer Start writing blockId {} length {} from {} to {}",
-              block.getBlockId(), queueLen, s.getLocalAddress(), nodes[0].getHostName());
+          LOG.info("Conglong Write Est 1626 DataStreamer Start Writing blockId {} length {} from {} to {}",
+              block.getBlockId(), queueLen, cl_hostname, nodes[0].getHostName());
         }
         if (queueLen > 0 && nodes.length > 1) {
           for (int i=0; i < nodes.length-1; i++) {
-            LOG.info("Conglong Write Est 1631 DataStreamer Start writing blockId {} length {} from {} to {}",
+            LOG.info("Conglong Write Est 1631 DataStreamer Start Writing blockId {} length {} from {} to {}",
                 block.getBlockId(), queueLen, nodes[i].getHostName(), nodes[i+1].getHostName());
           }
         }
@@ -1643,12 +1655,12 @@ class DataStreamer extends Daemon {
             PBHelperClient.vintPrefixed(blockReplyStream));
 
         if (queueLen > 0) {
-          LOG.info("Conglong Write Est 1642 DataStreamer Start writing blockId {} length {} from {} to {}",
-              block.getBlockId(), queueLen, s.getLocalAddress(), nodes[0].getHostName());
+          LOG.info("Conglong Write Est 1642 DataStreamer Start Writing blockId {} length {} from {} to {}",
+              block.getBlockId(), queueLen, cl_hostname, nodes[0].getHostName());
         }
         if (queueLen > 0 && nodes.length > 1) {
           for (int i=0; i < nodes.length-1; i++) {
-            LOG.info("Conglong Write Est 1647 DataStreamer Start writing blockId {} length {} from {} to {}",
+            LOG.info("Conglong Write Est 1647 DataStreamer Start Writing blockId {} length {} from {} to {}",
                 block.getBlockId(), queueLen, nodes[i].getHostName(), nodes[i+1].getHostName());
           }
         }
@@ -1656,12 +1668,12 @@ class DataStreamer extends Daemon {
         Status pipelineStatus = resp.getStatus();
 
         if (queueLen > 0) {
-          LOG.info("Conglong Write Est 1655 DataStreamer Start writing blockId {} length {} from {} to {}",
-              block.getBlockId(), queueLen, s.getLocalAddress(), nodes[0].getHostName());
+          LOG.info("Conglong Write Est 1655 DataStreamer Start Writing blockId {} length {} from {} to {}",
+              block.getBlockId(), queueLen, cl_hostname, nodes[0].getHostName());
         }
         if (queueLen > 0 && nodes.length > 1) {
           for (int i=0; i < nodes.length-1; i++) {
-            LOG.info("Conglong Write Est 1660 DataStreamer Start writing blockId {} length {} from {} to {}",
+            LOG.info("Conglong Write Est 1660 DataStreamer Start Writing blockId {} length {} from {} to {}",
                 block.getBlockId(), queueLen, nodes[i].getHostName(), nodes[i+1].getHostName());
           }
         }
@@ -1669,12 +1681,12 @@ class DataStreamer extends Daemon {
         firstBadLink = resp.getFirstBadLink();
 
         if (queueLen > 0) {
-          LOG.info("Conglong Write Est 1668 DataStreamer Start writing blockId {} length {} from {} to {}",
-              block.getBlockId(), queueLen, s.getLocalAddress(), nodes[0].getHostName());
+          LOG.info("Conglong Write Est 1668 DataStreamer Start Writing blockId {} length {} from {} to {}",
+              block.getBlockId(), queueLen, cl_hostname, nodes[0].getHostName());
         }
         if (queueLen > 0 && nodes.length > 1) {
           for (int i=0; i < nodes.length-1; i++) {
-            LOG.info("Conglong Write Est 1673 DataStreamer Start writing blockId {} length {} from {} to {}",
+            LOG.info("Conglong Write Est 1673 DataStreamer Start Writing blockId {} length {} from {} to {}",
                 block.getBlockId(), queueLen, nodes[i].getHostName(), nodes[i+1].getHostName());
           }
         }
