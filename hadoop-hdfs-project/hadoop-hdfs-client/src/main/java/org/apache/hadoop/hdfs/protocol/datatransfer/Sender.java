@@ -92,22 +92,22 @@ public class Sender implements DataTransferProtocol {
   }
 
   private static void send_readblock(final DataOutputStream out, final Op opcode,
-      final Message proto, final ExtendedBlock blk) throws IOException {
-    //LOG.info("Conglong Read Est 84 Sender Starting read blockId {} length {}",
-    //    blk.getBlockId(), blk.getNumBytes());
+      final Message proto, final ExtendedBlock blk, final DatanodeID datanodeID) throws IOException {
+    LOG.info("Conglong Read Est 84 Sender Starting read blockId {} length {} from {} to {}",
+        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cl_hostname);
     //LOG.trace("Sending DataTransferOp {}: {}",
     //    proto.getClass().getSimpleName(), proto);
-    //LOG.info("Conglong Read Est 88 Sender Starting read blockId {} length {}",
-    //    blk.getBlockId(), blk.getNumBytes());
+    LOG.info("Conglong Read Est 88 Sender Starting read blockId {} length {} from {} to {}",
+        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cl_hostname);
     op(out, opcode);
-    //LOG.info("Conglong Read Est 91 Sender Starting read blockId {} length {}",
-    //    blk.getBlockId(), blk.getNumBytes());
+    LOG.info("Conglong Read Est 91 Sender Starting read blockId {} length {} from {} to {}",
+        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cl_hostname);
     proto.writeDelimitedTo(out);
-    //LOG.info("Conglong Read Est 94 Sender Starting read blockId {} length {}",
-    //    blk.getBlockId(), blk.getNumBytes());
+    LOG.info("Conglong Read Est 94 Sender Starting read blockId {} length {} from {} to {}",
+        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cl_hostname);
     out.flush();
-    //LOG.info("Conglong Read Est 97 Sender Starting read blockId {} length {}",
-    //    blk.getBlockId(), blk.getNumBytes());
+    LOG.info("Conglong Read Est 97 Sender Starting read blockId {} length {} from {} to {}",
+        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cl_hostname);
   }
 
   private static void send_writeblock(final DataOutputStream out, final Op opcode,
@@ -187,7 +187,7 @@ public class Sender implements DataTransferProtocol {
     LOG.info("Conglong Read Est 150 Sender Starting read blockId {} length {} from {} to {}",
         blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cl_hostname);
     //send(out, Op.READ_BLOCK, proto);
-    send_readblock(out, Op.READ_BLOCK, proto, blk);
+    send_readblock(out, Op.READ_BLOCK, proto, blk, datanodeID);
     //LOG.info("Conglong Read Est 154 Sender");
   }
 

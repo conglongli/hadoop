@@ -640,6 +640,17 @@ class DataStreamer extends Daemon {
               " < lastByteOffsetInBlock, " + this + ", " + one);
         }
 
+        if (queueLen > 0) {
+          LOG.info("Conglong Write Est 644 DataStreamer Start Writing blockId {} length {} from {} to {}",
+              block.getBlockId(), queueLen, cl_hostname, nodes[0].getHostName());
+        }
+        if (nodes.length > 1) {
+          for (int i=0; i < nodes.length-1; i++) {
+            LOG.info("Conglong Write Est 649 DataStreamer Start Writing blockId {} length {} from {} to {}",
+                block.getBlockId(), queueLen, nodes[i].getHostName(), nodes[i+1].getHostName());
+          }
+        }
+
         if (one.isLastPacketInBlock()) {
           // wait for all data packets have been successfully acked
           synchronized (dataQueue) {
@@ -657,6 +668,17 @@ class DataStreamer extends Daemon {
           }
           stage = BlockConstructionStage.PIPELINE_CLOSE;
         }
+
+        if (queueLen > 0) {
+          LOG.info("Conglong Write Est 673 DataStreamer Start Writing blockId {} length {} from {} to {}",
+              block.getBlockId(), queueLen, cl_hostname, nodes[0].getHostName());
+        }
+        if (nodes.length > 1) {
+          for (int i=0; i < nodes.length-1; i++) {
+            LOG.info("Conglong Write Est 678 DataStreamer Start Writing blockId {} length {} from {} to {}",
+                block.getBlockId(), queueLen, nodes[i].getHostName(), nodes[i+1].getHostName());
+          }
+        }
         
         // send the packet
         SpanId spanId = SpanId.INVALID;
@@ -672,6 +694,17 @@ class DataStreamer extends Daemon {
             dataQueue.removeFirst();
             ackQueue.addLast(one);
             dataQueue.notifyAll();
+          }
+        }
+
+        if (queueLen > 0) {
+          LOG.info("Conglong Write Est 701 DataStreamer Start Writing blockId {} length {} from {} to {}",
+              block.getBlockId(), queueLen, cl_hostname, nodes[0].getHostName());
+        }
+        if (nodes.length > 1) {
+          for (int i=0; i < nodes.length-1; i++) {
+            LOG.info("Conglong Write Est 706 DataStreamer Start Writing blockId {} length {} from {} to {}",
+                block.getBlockId(), queueLen, nodes[i].getHostName(), nodes[i+1].getHostName());
           }
         }
 
