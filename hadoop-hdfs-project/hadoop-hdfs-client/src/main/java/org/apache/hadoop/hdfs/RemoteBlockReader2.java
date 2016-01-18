@@ -130,15 +130,8 @@ public class RemoteBlockReader2  implements BlockReader {
   private final Tracer tracer;
 
   // Conglong
-  //private InetAddress cl_ip;
-  //private static String cl_hostname = "";
-
-  try {
-    private static String cl_hostname = (InetAddress.getLocalHost()).getHostName();
-  } catch (UnknownHostException e) {
-    e.printStackTrace();
-    private static String cl_hostname = "";
-  }
+  private InetAddress cl_ip;
+  private static String cl_hostname;
 
   @VisibleForTesting
   public Peer getPeer() {
@@ -317,14 +310,13 @@ public class RemoteBlockReader2  implements BlockReader {
     checksumSize = this.checksum.getChecksumSize();
     this.tracer = tracer;
 
-    /*
     try {
       this.cl_ip = InetAddress.getLocalHost();
       this.cl_hostname = (this.cl_ip).getHostName(); 
     } catch (UnknownHostException e) {
       e.printStackTrace();
+      this.cl_hostname = "";
     }
-    */
   }
 
 
