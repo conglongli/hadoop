@@ -93,21 +93,27 @@ public class Sender implements DataTransferProtocol {
 
   private static void send_readblock(final DataOutputStream out, final Op opcode,
       final Message proto, final ExtendedBlock blk, final DatanodeID datanodeID) throws IOException {
+    String cll_hostname = "";
+    try {
+      cll_hostname = (InetAddress.getLocalHost()).getHostName(); 
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+    }
     LOG.info("Conglong Read Est 84 Sender Starting read blockId {} length {} from {} to {}",
-        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cl_hostname);
+        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cll_hostname);
     //LOG.trace("Sending DataTransferOp {}: {}",
     //    proto.getClass().getSimpleName(), proto);
     LOG.info("Conglong Read Est 88 Sender Starting read blockId {} length {} from {} to {}",
-        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cl_hostname);
+        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cll_hostname);
     op(out, opcode);
     LOG.info("Conglong Read Est 91 Sender Starting read blockId {} length {} from {} to {}",
-        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cl_hostname);
+        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cll_hostname);
     proto.writeDelimitedTo(out);
     LOG.info("Conglong Read Est 94 Sender Starting read blockId {} length {} from {} to {}",
-        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cl_hostname);
+        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cll_hostname);
     out.flush();
     LOG.info("Conglong Read Est 97 Sender Starting read blockId {} length {} from {} to {}",
-        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cl_hostname);
+        blk.getBlockId(), blk.getNumBytes(), datanodeID.getHostName(), cll_hostname);
   }
 
   private static void send_writeblock(final DataOutputStream out, final Op opcode,
