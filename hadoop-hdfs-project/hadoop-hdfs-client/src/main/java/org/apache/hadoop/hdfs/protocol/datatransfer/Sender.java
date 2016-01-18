@@ -161,8 +161,8 @@ public class Sender implements DataTransferProtocol {
         .build();
     LOG.info("Conglong Read Est 150 Sender Starting read blockId {} length {} from {} to {}",
         blk.getBlockId(), blk.getNumBytes(), "", cl_hostname);
-    //send(out, Op.READ_BLOCK, proto);
-    send_readblock(out, Op.READ_BLOCK, proto, blk);
+    send(out, Op.READ_BLOCK, proto);
+    //send_readblock(out, Op.READ_BLOCK, proto, blk);
     //LOG.info("Conglong Read Est 154 Sender");
   }
 
