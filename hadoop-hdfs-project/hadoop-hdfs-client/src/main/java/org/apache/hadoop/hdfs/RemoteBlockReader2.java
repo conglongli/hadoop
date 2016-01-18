@@ -131,7 +131,7 @@ public class RemoteBlockReader2  implements BlockReader {
 
   // Conglong
   private InetAddress cl_ip;
-  private String cl_hostname = "";
+  private static String cl_hostname = "";
 
   @VisibleForTesting
   public Peer getPeer() {
@@ -402,8 +402,7 @@ public class RemoteBlockReader2  implements BlockReader {
    * @param datanodeID  The DatanodeID this peer is connected to
    * @return New BlockReader instance, or null on error.
    */
-  //public static BlockReader newBlockReader(String file,
-  public BlockReader newBlockReader(String file,
+  public static BlockReader newBlockReader(String file,
       ExtendedBlock block,
       Token<BlockTokenIdentifier> blockToken,
       long startOffset, long len,
