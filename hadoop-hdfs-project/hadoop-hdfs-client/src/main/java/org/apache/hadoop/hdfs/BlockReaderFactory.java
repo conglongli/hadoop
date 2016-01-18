@@ -346,8 +346,8 @@ public class BlockReaderFactory implements ShortCircuitReplicaCreator {
       return reader;
     }
     final ShortCircuitConf scConf = conf.getShortCircuitConf();
-    LOG.info("Conglong Read Est 349 BlockReaderFactory Starting read blockId {} length {} from datanode {}",
-        block.getBlockId(), block.getNumBytes(), datanode.getHostName());
+    //LOG.info("Conglong Read Est 349 BlockReaderFactory Starting read blockId {} length {} from datanode {}",
+    //    block.getBlockId(), block.getNumBytes(), datanode.getHostName());
     if (scConf.isShortCircuitLocalReads() && allowShortCircuitLocalReads) {
       if (clientContext.getUseLegacyBlockReaderLocal()) {
         reader = getLegacyBlockReaderLocal();
@@ -376,8 +376,8 @@ public class BlockReaderFactory implements ShortCircuitReplicaCreator {
     Preconditions.checkState(!DFSInputStream.tcpReadsDisabledForTesting,
         "TCP reads were disabled for testing, but we failed to " +
         "do a non-TCP read.");
-    LOG.info("Conglong Read Est 377 BlockReaderFactory Starting read blockId {} length {} from datanode {}",
-        block.getBlockId(), block.getNumBytes(), datanode.getHostName());
+    //LOG.info("Conglong Read Est 377 BlockReaderFactory Starting read blockId {} length {} from datanode {}",
+    //    block.getBlockId(), block.getNumBytes(), datanode.getHostName());
     return getRemoteBlockReaderFromTcp();
   }
 

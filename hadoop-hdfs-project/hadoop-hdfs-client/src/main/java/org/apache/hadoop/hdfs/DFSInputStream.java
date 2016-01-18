@@ -279,7 +279,7 @@ public class DFSInputStream extends FSInputStream
       while (iter.hasNext()) {
         LocatedBlock blk = iter.next();
         DatanodeInfo datanode = (blk.getLocations())[0];
-        DFSClient.LOG.info("Conglong Read Est 270 DFSInputStream Start Reading blockId {} length {} from datanode {} to {}",
+        DFSClient.LOG.info("Conglong Read Est 270 DFSInputStream Start Reading blockId {} length {} from {} to {}",
             (blk.getBlock()).getBlockId(), blk.getBlockSize(), datanode.getHostName(), this.cl_hostname);
       }
     }
@@ -1083,7 +1083,7 @@ public class DFSInputStream extends FSInputStream
         if (!deadNodes.containsKey(nodes[i])
             && (ignoredNodes == null || !ignoredNodes.contains(nodes[i]))) {
           chosenNode = nodes[i];
-          DFSClient.LOG.info("Conglong Read Est 1053 DFSInputStream Start Reading blockId {} length {} from datanode {} to {}",
+          DFSClient.LOG.info("Conglong Read Est 1053 DFSInputStream Start Reading blockId {} length {} from {} to {}",
               (block.getBlock()).getBlockId(), block.getBlockSize(), nodes[i].getHostName(), cl_hostname);
           // Storage types are ordered to correspond with nodes, so use the same
           // index to get storage type.
