@@ -599,7 +599,7 @@ class DataStreamer extends Daemon {
         }
 
         long queueLen = 0;
-        if (nodes.length > 0 && dataQueue.size() > 0) {
+        if (queueLen == 0 && nodes.length > 0 && dataQueue.size() > 0) {
           synchronized (dataQueue) {
             ListIterator<DFSPacket> listIterator = dataQueue.listIterator();
             while (listIterator.hasNext()) {
@@ -626,6 +626,14 @@ class DataStreamer extends Daemon {
         if (stage == BlockConstructionStage.PIPELINE_SETUP_CREATE) {
           LOG.debug("Allocating new block: " + this);
           setPipeline(nextBlockOutputStream());
+          if (queueLen == 0 && nodes.length > 0 && dataQueue.size() > 0) {
+            synchronized (dataQueue) {
+              ListIterator<DFSPacket> listIterator = dataQueue.listIterator();
+              while (listIterator.hasNext()) {
+                queueLen += (listIterator.next()).getDataLen();
+              }
+            }
+          }
           if (queueLen > 0) {
             LOG.info("Conglong Write Est 630 DataStreamer Start Writing blockId {} length {} from {} to {}",
                 block.getBlockId(), queueLen, cl_hostname, nodes[0].getHostName());
@@ -637,6 +645,14 @@ class DataStreamer extends Daemon {
             }
           }
           initDataStreaming();
+          if (queueLen == 0 && nodes.length > 0 && dataQueue.size() > 0) {
+            synchronized (dataQueue) {
+              ListIterator<DFSPacket> listIterator = dataQueue.listIterator();
+              while (listIterator.hasNext()) {
+                queueLen += (listIterator.next()).getDataLen();
+              }
+            }
+          }
           if (queueLen > 0) {
             LOG.info("Conglong Write Est 641 DataStreamer Start Writing blockId {} length {} from {} to {}",
                 block.getBlockId(), queueLen, cl_hostname, nodes[0].getHostName());
@@ -650,6 +666,14 @@ class DataStreamer extends Daemon {
         } else if (stage == BlockConstructionStage.PIPELINE_SETUP_APPEND) {
           LOG.debug("Append to block {}", block);
           setupPipelineForAppendOrRecovery();
+          if (queueLen == 0 && nodes.length > 0 && dataQueue.size() > 0) {
+            synchronized (dataQueue) {
+              ListIterator<DFSPacket> listIterator = dataQueue.listIterator();
+              while (listIterator.hasNext()) {
+                queueLen += (listIterator.next()).getDataLen();
+              }
+            }
+          }
           if (queueLen > 0) {
             LOG.info("Conglong Write Est 654 DataStreamer Start Writing blockId {} length {} from {} to {}",
                 block.getBlockId(), queueLen, cl_hostname, nodes[0].getHostName());
@@ -664,6 +688,14 @@ class DataStreamer extends Daemon {
             continue;
           }
           initDataStreaming();
+          if (queueLen == 0 && nodes.length > 0 && dataQueue.size() > 0) {
+            synchronized (dataQueue) {
+              ListIterator<DFSPacket> listIterator = dataQueue.listIterator();
+              while (listIterator.hasNext()) {
+                queueLen += (listIterator.next()).getDataLen();
+              }
+            }
+          }
           if (queueLen > 0) {
             LOG.info("Conglong Write Est 668 DataStreamer Start Writing blockId {} length {} from {} to {}",
                 block.getBlockId(), queueLen, cl_hostname, nodes[0].getHostName());
@@ -675,8 +707,7 @@ class DataStreamer extends Daemon {
             }
           }
         }
-        long queueLen = 0;
-        if (nodes.length > 0 && dataQueue.size() > 0) {
+        if (queueLen == 0 && nodes.length > 0 && dataQueue.size() > 0) {
           synchronized (dataQueue) {
             ListIterator<DFSPacket> listIterator = dataQueue.listIterator();
             while (listIterator.hasNext()) {
@@ -701,6 +732,15 @@ class DataStreamer extends Daemon {
         if (lastByteOffsetInBlock > stat.getBlockSize()) {
           throw new IOException("BlockSize " + stat.getBlockSize() +
               " < lastByteOffsetInBlock, " + this + ", " + one);
+        }
+
+        if (queueLen == 0 && nodes.length > 0 && dataQueue.size() > 0) {
+          synchronized (dataQueue) {
+            ListIterator<DFSPacket> listIterator = dataQueue.listIterator();
+            while (listIterator.hasNext()) {
+              queueLen += (listIterator.next()).getDataLen();
+            }
+          }
         }
 
         if (queueLen > 0) {
